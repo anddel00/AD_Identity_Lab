@@ -362,9 +362,38 @@
       width: 300px; height: 64px;
       border-radius: 50px; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-align: center; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; text-decoration: none;
     }
-    .btn-outline-blue { border-color: var(--accent-color); background-color: transparent; color: var(--accent-color); }
-    .btn-outline-blue:hover { background-color: var(--accent-color); color: #fff; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3); transform: translateY(-3px); }
+    /* --- BOTTONE OUTLINE CON EFFETTO FILL FLUIDO --- */
+    .btn-outline-blue {
+      position: relative;
+      overflow: hidden; /* Nasconde l'onda finché non ci passi sopra */
+      border-color: var(--accent-color);
+      background-color: transparent;
+      color: var(--accent-color);
+      z-index: 1; /* Fondamentale: tiene il testo sopra il livello del colore */
+      transition: color 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, transform 0.4s ease;
+    }
 
+    /* L'elemento "fluido" nascosto sotto */
+    .btn-outline-blue::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: var(--accent-color);
+      z-index: -1; /* Lo spinge dietro al testo */
+      transform: translateY(100%); /* Lo posiziona fuori dal bottone in basso */
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Stato Hover */
+    .btn-outline-blue:hover {
+      color: #ffffff; /* Il testo diventa bianco */
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .btn-outline-blue:hover::before {
+      transform: translateY(0); /* L'onda sale e riempie lo spazio */
+    }
     /* --- PRICING SECTION --- */
     .pricing-section {
       padding: 60px 0 100px;
@@ -383,7 +412,7 @@
 
     /* Card Standard (Light) */
     .pricing-card {
-      background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 15px;
+      background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 30px;
       padding: 30px 25px; display: flex; flex-direction: column; height: 100%;
       position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
       opacity: 0; transform: translateY(50px);
@@ -435,10 +464,11 @@
 
     /* Bottoni Pricing */
     .btn-pricing {
-      width: 100%; padding: 14px 0; border-radius: 12px;
+      width: 85%; padding: 14px 0; border-radius: 30px;
       font-family: var(--font-tech); font-size: 0.9rem;
       font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-align: center;
       transition: all 0.3s ease; cursor: pointer; display: block; border: none; position: relative; z-index: 5;
+      align-self: center;
     }
 
     /* Tasto Scopri Template (minimale) nelle Card Pricing */
