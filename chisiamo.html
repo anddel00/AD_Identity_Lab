@@ -15,7 +15,7 @@
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
 
   <style>
-    /* --- EREDITA LE VARIABILI ESATTE DELL'INDEX --- */
+    /* --- RESET & VARIABLES ESATTE DELL'INDEX --- */
     :root {
       --bg-color: #F8FAFC;
       --surface-color: #FFFFFF;
@@ -96,11 +96,41 @@
     .mobile-menu-overlay.active .mobile-nav-item:nth-child(2) .mobile-nav-link { transition-delay: 0.5s; transform: translateY(0); opacity: 1; }
     .mobile-menu-overlay.active .mobile-nav-item:nth-child(3) .mobile-nav-link { transition-delay: 0.6s; transform: translateY(0); opacity: 1; }
 
-    /* --- ANIMAZIONI DI PARTENZA --- */
+    /* --- ANIMAZIONI DI PARTENZA (HEADER E TESTI) --- */
     body.start-animations .logo { animation: dropStraight 0.8s ease-out forwards; }
     body.start-animations .nav-links { animation: fadeDownCenter 0.8s ease-out 0.2s forwards; }
     @keyframes dropStraight { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeDownCenter { from { opacity: 0; transform: translateY(-20px) translateX(-50%); } to { opacity: 1; transform: translateY(0) translateX(-50%); } }
+
+    /* ========================================================================= */
+    /* --- NUOVO EFFETTO TEXT REVEAL (RISE UP) --- */
+    /* ========================================================================= */
+    .line-mask {
+      display: block;
+      overflow: hidden; /* Taglia tutto ciò che esce da questo contenitore */
+      padding-bottom: 0.15em; /* Previene il taglio delle lettere basse come la 'g' o 'p' */
+      margin-bottom: -0.15em;
+    }
+
+    .rise-text {
+      display: inline-block;
+      color: var(--text-color);
+      transform: translateY(115%); /* Parte completamente nascosto sotto la maschera */
+      opacity: 0;
+    }
+
+    body.start-animations .rise-text {
+      animation: riseUp 1.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    /* Aggiungiamo i delay per l'effetto a cascata dopo che il preloader scompare */
+    body.start-animations .delay-1 { animation-delay: 1.1s; }
+    body.start-animations .delay-2 { animation-delay: 1.4s; }
+
+    @keyframes riseUp {
+      0% { transform: translateY(115%); opacity: 1; } /* L'opacity 1 serve a farlo comparire solo mentre sale */
+      100% { transform: translateY(0); opacity: 1; }
+    }
 
     /* --- ELEMENTI "REVEALED" --- */
     .revealed-element {
@@ -113,19 +143,20 @@
     /* --- STILI SPECIFICI PAGINA CHI SIAMO --- */
     .content-scroller { position: relative; z-index: 20; background-color: var(--bg-color); padding-top: 150px; min-height: 100vh; }
 
-    .manifesto-hero { padding: 80px 0 60px 0; }
-    .manifesto-tag { font-family: var(--font-tech); font-size: 0.9rem; color: var(--accent-color); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block; }
+    .manifesto-hero { padding: 40px 0 60px 0; }
 
     .manifesto-title {
       font-family: var(--font-hero);
-      font-size: clamp(3.5rem, 6vw, 6.5rem);
+      font-size: clamp(4rem, 9vw, 12rem);
+      line-height: 0.95;
       font-weight: 600;
-      color: var(--text-color);
-      line-height: 1;
       letter-spacing: -0.02em;
-      margin-bottom: 40px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transform: scaleY(1.15);
+      transform-origin: left bottom;
     }
-    .manifesto-title span { color: var(--secondary-text); }
 
     .manifesto-body {
       max-width: 900px;
@@ -137,8 +168,17 @@
     }
     .manifesto-body strong { color: var(--text-color); font-weight: 600; }
 
+    /* --- PREMIUM SEPARATOR --- */
+    .premium-separator {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.3), rgba(37, 99, 235, 0.8), rgba(37, 99, 235, 0.3), transparent);
+      position: relative;
+      z-index: 10;
+    }
+
     /* --- LE DUE ANIME (FOUNDERS) --- */
-    .founders-section { padding: 60px 0 100px 0; border-top: 1px solid var(--border-color); }
+    .founders-section { padding: 80px 0 100px 0; }
     .founders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; }
 
     .founder-card {
@@ -167,7 +207,7 @@
     .founder-name { font-family: var(--font-hero); font-size: 2.5rem; font-weight: 600; color: var(--text-color); margin-bottom: 25px; letter-spacing: -1px; position: relative; z-index: 1; }
     .founder-desc { font-size: 1.1rem; color: var(--secondary-text); line-height: 1.6; position: relative; z-index: 1; }
 
-    /* --- FOOTER (Stesso dell'index) --- */
+    /* --- FOOTER --- */
     footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-color: #ffffff; position: relative; z-index: 10; font-size: 0.95rem; color: var(--secondary-text); }
     .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
     .footer-col h4 { color: var(--text-color); font-size: 1.1rem; margin-bottom: 20px; font-weight: 700; }
@@ -180,8 +220,9 @@
     .social-link svg { fill: currentColor; width: 24px; height: 24px; }
 
     @media (max-width: 1024px) {
+      .content-scroller { padding-top: 120px; }
       .manifesto-title { font-size: 3.2rem; }
-      .manifesto-body { font-size: 1.15rem; }
+      .manifesto-body { font-size: 1.15rem; margin-bottom: 40px; }
       .founders-grid { grid-template-columns: 1fr; }
       .founder-card { padding: 35px; }
       .nav-links, .desktop-spacer { display: none; }
@@ -206,8 +247,9 @@
 <div class="menu-ripple ripple-blue-menu"></div>
 <div class="mobile-menu-overlay">
   <ul class="mobile-nav-list">
+    <li class="mobile-nav-item"><a href="index.html" class="mobile-nav-link">Home</a></li>
     <li class="mobile-nav-item"><a href="progetti.html" class="mobile-nav-link">Templates</a></li>
-    <li class="mobile-nav-item"><a href="chi-siamo.html" class="mobile-nav-link">Chi Siamo</a></li>
+    <li class="mobile-nav-item"><a href="chi-siamo.html" class="mobile-nav-link" style="color: var(--accent-color);">Chi Siamo</a></li>
     <li class="mobile-nav-item"><a href="faq.html" class="mobile-nav-link">FAQ</a></li>
   </ul>
 </div>
@@ -218,7 +260,7 @@
       <a href="index.html" class="logo">A&D</a>
       <ul class="nav-links">
         <li class="nav-item"><a href="progetti.html"><span>Templates</span><span class="hover-text">Templates</span></a></li>
-        <li class="nav-item"><a href="chi-siamo.html"><span>Chi Siamo</span><span class="hover-text">Chi Siamo</span></a></li>
+        <li class="nav-item"><a href="chi-siamo.html" style="color:var(--accent-color);"><span>Chi Siamo</span><span class="hover-text" style="color:var(--accent-color);">Chi Siamo</span></a></li>
         <li class="nav-item"><a href="faq.html"><span>FAQ</span><span class="hover-text">FAQ</span></a></li>
       </ul>
       <div class="desktop-spacer"></div>
@@ -231,19 +273,21 @@
 
   <section class="manifesto-hero">
     <div class="container">
-      <span class="manifesto-tag revealed-element">Il Nostro Manifesto</span>
-      <h1 class="manifesto-title revealed-element" style="transition-delay: 0.1s;">
-        Non siamo una web agency.<br>
-        <span>Siamo Insider del mondo Corporate.</span>
+
+      <h1 class="manifesto-title">
+        <span class="line-mask"><span class="rise-text delay-1">Non siamo una web agency.</span></span>
+        <span class="line-mask"><span class="rise-text delay-2">Siamo Insider del mondo Corporate.</span></span>
       </h1>
 
-      <div class="manifesto-body revealed-element" style="transition-delay: 0.2s;">
+      <div class="manifesto-body revealed-element" style="transition-delay: 0.9s;">
         <p>Abbiamo visto decine di professionisti brillanti, manager e talenti creativi venire scartati ai colloqui per colpa di un PDF di due pagine che non rendeva giustizia al loro reale valore. Il mercato del lavoro di alto livello oggi non premia chi è semplicemente bravo, ma <strong>chi sa posizionarsi meglio</strong>.</p>
         <br>
         <p>A&D Identity Lab nasce da una constatazione brutale: il Curriculum tradizionale è morto. I recruiter dedicano 6 secondi alla scansione di un profilo. Noi costruiamo infrastrutture digitali progettate per fare una sola cosa: <strong>trasformarti in un professionista impossibile da ignorare.</strong></p>
       </div>
     </div>
   </section>
+
+  <div class="premium-separator"></div>
 
   <section class="founders-section">
     <div class="container">
@@ -305,7 +349,7 @@
 </div>
 
 <script>
-  // --- LOGICA PRELOADER (Eredita index) ---
+  // --- LOGICA PRELOADER ---
   document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('intro-preloader');
     const introContent = document.querySelector('.intro-content');

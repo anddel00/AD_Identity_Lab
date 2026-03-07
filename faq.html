@@ -111,16 +111,16 @@
     /* --- TITOLI E ELEMENTI "REVEALED" --- */
     .section-title {
       font-family: var(--font-hero);
-      font-size: clamp(3rem, 5vw, 6rem);
+      font-size: clamp(4.5rem, 9vw, 12rem);
+      line-height: 0.95;
       font-weight: 600;
-      margin-top: 0;
-      color: var(--text-color);
-      margin-bottom: 30px; /* Ridotto per la pagina FAQ */
-      letter-spacing: -1px;
-      opacity: 0;
-      transform: translateY(40px) scaleY(1.05);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+
+      transform: scaleY(1.15);
       transform-origin: left bottom;
-      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .section-title.revealed { opacity: 1; transform: translateY(0) scaleY(1.05); }
 
@@ -262,7 +262,7 @@
   <ul class="mobile-nav-list">
     <li class="mobile-nav-item"><a href="progetti.html" class="mobile-nav-link">Templates</a></li>
     <li class="mobile-nav-item"><a href="chisiamo.html" class="mobile-nav-link">Chi Siamo</a></li>
-    <li class="mobile-nav-item"><a href="faq.html" class="mobile-nav-link">FAQ</a></li>
+    <li class="mobile-nav-item"><a href="faq.html" class="mobile-nav-link" style="color: var(--accent-color);">FAQ</a></li>
   </ul>
 </div>
 
