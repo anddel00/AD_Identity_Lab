@@ -142,35 +142,49 @@
       background-color: var(--bg-color);
       z-index: 1;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       padding-top: 180px;
       will-change: clip-path;
     }
 
     .hero-wrapper {
-      width: 100%;
+      display: flex; justify-content: flex-start; align-items: center; width: 100%;
       will-change: transform, opacity;
       transform-origin: center center;
     }
 
-    .hero-text-block { width: 100%; max-width: 1000px; }
+    .hero-text-block { width: 100%; }
+
     h1 {
       font-family: var(--font-hero);
-      /* Ho alzato un pelo la media (9vw) e il massimo (12rem) */
-      font-size: clamp(4.5rem, 9vw, 12rem);
-
-      /* Stringiamo le righe: fa sembrare il testo molto più massiccio */
+      font-size: clamp(4rem, 9vw, 12rem);
       line-height: 0.95;
       font-weight: 600;
       letter-spacing: -0.02em;
       margin-bottom: 1.5rem;
       display: flex;
       flex-direction: column;
-
       transform: scaleY(1.15);
       transform-origin: left bottom;
     }
-    .water-text { color: rgba(15, 23, 42, 0.15); background-image: linear-gradient(to bottom, var(--text-color) 50%, var(--accent-color) 50%); background-size: 100% 200%; background-position: 0% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-bottom: 0.15em; margin-bottom: -0.15em; opacity: 0; transform: translateY(20px); }
+
+    /* ========================================================================= */
+    /* --- NUOVO EFFETTO TEXT REVEAL (RISE UP) --- */
+    /* ========================================================================= */
+    .line-mask {
+      display: block;
+      overflow: hidden;
+      padding-bottom: 0.15em;
+      margin-bottom: -0.15em;
+    }
+
+    .rise-text {
+      display: inline-block;
+      color: var(--text-color);
+      transform: translateY(115%);
+      opacity: 0;
+    }
+
     p.hero-subtitle { font-family: var(--font-hero); font-size: 1.25rem; color: var(--secondary-text); max-width: 600px; font-weight: 500; border-left: 3px solid var(--accent-color); padding-left: 25px; opacity: 0; margin-bottom: 2rem; }
 
     /* IL SIPARIO */
@@ -182,18 +196,22 @@
       box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.04);
     }
 
-    /* ANIMAZIONI FULMINEE */
+    /* ANIMAZIONI FULMINEE E RISE UP */
     body.start-animations .logo { animation: dropStraight 0.2s ease-out forwards; }
     body.start-animations .nav-links { animation: fadeDownCenter 0.2s ease-out forwards; }
-    body.start-animations .water-text { animation: waterLevelDescend 2.5s cubic-bezier(0.45, 0, 0.55, 1) forwards; }
-    body.start-animations .delay-1 { animation-delay: 0.1s; }
-    body.start-animations .delay-2 { animation-delay: 0.5s; }
-    body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.2s forwards; }
+
+    body.start-animations .rise-text { animation: riseUp 1.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    body.start-animations .delay-1 { animation-delay: 1.1s; }
+    body.start-animations .delay-2 { animation-delay: 1.4s; }
+    body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwards; }
 
     @keyframes dropStraight { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeDownCenter { from { opacity: 0; transform: translateY(-20px) translateX(-50%); } to { opacity: 1; transform: translateY(0) translateX(-50%); } }
-    @keyframes waterLevelDescend { 0% { opacity: 0; transform: translateY(20px); background-position: 0% 100%; } 10% { opacity: 1; } 100% { opacity: 1; transform: translateY(0); background-position: 0% 0%; } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes riseUp {
+      0% { transform: translateY(115%); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
 
     .premium-separator { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(37,99,235,0.3), rgba(37,99,235,0.8), rgba(37,99,235,0.3), transparent); position: relative; z-index: 10; }
 
@@ -341,7 +359,6 @@
       color: var(--accent-color);
       background: rgba(37,99,235,0.1);
     }
-    /* --- SELETTORE DISPOSITIVI (Apple Style Sliding Pill) --- */
     /* --- SELETTORE DISPOSITIVI (Apple Style Sliding Pill) --- */
     .device-toggle-wrapper {
       position: absolute;
@@ -502,11 +519,12 @@
 
     /* --- RESPONSIVE MOBILE FIX --- */
     @media (max-width: 1024px) {
-      h1 { font-size: 12vw; margin-bottom: 1rem; }
+      h1 { font-size: 12vw; margin-bottom: 0; }
 
       .hero { height: 100vh; }
-      .hero-content-mask { padding-top: 140px; padding-bottom: 60px; }
-
+      .hero-content-mask { padding-top: 0; padding-bottom: 0; }
+      .hero-wrapper { flex-direction: column; align-items: flex-start; justify-content: center; }
+      .hero-text-block { margin-bottom: 0; }
       .nav-links { display: none; } .desktop-spacer { display: none; } .menu-toggle { display: flex; }
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
       .blueprint-grid { opacity: 0.5; -webkit-mask-image: none !important; mask-image: none !important;}
@@ -895,12 +913,9 @@
       <div class="hero-wrapper">
         <div class="hero-text-block">
           <h1>
-            <span class="water-text delay-1">I Nostri Modelli.</span>
-            <span class="water-text delay-2">Risultati reali.</span>
+            <span class="line-mask"><span class="rise-text delay-1">La tua nuova identità.</span></span>
+            <span class="line-mask"><span class="rise-text delay-2">Scegli il modello da cui partire.</span></span>
           </h1>
-          <p class="hero-subtitle">
-            Esplora l'infrastruttura reale che abbiamo costruito per professionisti esigenti. Scegli il piano più adatto e naviga tra le architetture per trovare il design perfetto.
-          </p>
         </div>
       </div>
     </div>
