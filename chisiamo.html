@@ -71,6 +71,7 @@
     .nav-item a span.hover-text { color: var(--accent-color); }
     .nav-item:hover a { transform: translateY(-24px); }
     .desktop-spacer { width: 60px; display: block; }
+    .nav-item.active-nav a { transform: translateY(0) !important; cursor: default; }
 
     /* --- MOBILE MENU --- */
     .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 14px; cursor: pointer; z-index: 2002; }
@@ -95,6 +96,8 @@
     .mobile-menu-overlay.active .mobile-nav-item:nth-child(1) .mobile-nav-link { transition-delay: 0.4s; transform: translateY(0); opacity: 1; }
     .mobile-menu-overlay.active .mobile-nav-item:nth-child(2) .mobile-nav-link { transition-delay: 0.5s; transform: translateY(0); opacity: 1; }
     .mobile-menu-overlay.active .mobile-nav-item:nth-child(3) .mobile-nav-link { transition-delay: 0.6s; transform: translateY(0); opacity: 1; }
+    .mobile-menu-overlay.active .mobile-nav-item:nth-child(4) .mobile-nav-link { transition-delay: 0.6s; transform: translateY(0); opacity: 1; }
+
 
     /* --- ANIMAZIONI DI PARTENZA (HEADER E TESTI) --- */
     body.start-animations .logo { animation: dropStraight 0.8s ease-out forwards; }
@@ -284,12 +287,13 @@
       content: '“';
       display: block;
       font-family: Georgia, serif;
-      font-size: 6rem;
+      font-size: 6.5rem;
       color: ghostwhite;
       opacity: 0.5;
       line-height: 0.2;
       margin-top: 25px;
       margin-left: -5px;
+      font-weight: 700;
     }
 
     /* LA "E COMMERCIALE" GIGANTE */
@@ -358,7 +362,7 @@
       <a href="index.html" class="logo">A&D</a>
       <ul class="nav-links">
         <li class="nav-item"><a href="progetti.html"><span>Templates</span><span class="hover-text">Templates</span></a></li>
-        <li class="nav-item"><a href="chi-siamo.html" style="color:var(--accent-color);"><span>Chi Siamo</span><span class="hover-text" style="color:var(--accent-color);">Chi Siamo</span></a></li>
+        <li class="nav-item active-nav"><a href="chi-siamo.html" style="color:var(--accent-color);"><span>Chi Siamo</span><span class="hover-text" style="color:var(--accent-color);">Chi Siamo</span></a></li>
         <li class="nav-item"><a href="faq.html"><span>FAQ</span><span class="hover-text">FAQ</span></a></li>
       </ul>
       <div class="desktop-spacer"></div>
