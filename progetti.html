@@ -66,7 +66,7 @@
       mask-image: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), black 0%, transparent 100%);
     }
 
-    .container { width: 92%; max-width: var(--container-width); margin: 0 auto; height: 100%; position: relative; z-index: 1; }
+    .container { width: 100%; max-width: var(--container-width); margin: 0 auto; height: 100%; position: relative; z-index: 1; }
 
     /* --- HEADER --- */
     header { height: var(--header-height); position: fixed; width: 100%; top: 0; z-index: 9999; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); color: var(--text-color); }
@@ -185,7 +185,7 @@
       opacity: 0;
     }
 
-    p.hero-subtitle { font-family: var(--font-hero); font-size: 1.25rem; color: var(--secondary-text); max-width: 600px; font-weight: 500; border-left: 3px solid var(--accent-color); padding-left: 25px; opacity: 0; margin-bottom: 2rem; }
+    p.hero-subtitle { font-family: var(--font-main); font-size: 1.25rem; color: var(--secondary-text); max-width: 600px; font-weight: 500; border-left: 3px solid var(--accent-color); padding-left: 25px; opacity: 0; margin-bottom: 2rem; }
 
     /* IL SIPARIO */
     .content-scroller {
@@ -519,12 +519,13 @@
 
     /* --- RESPONSIVE MOBILE FIX --- */
     @media (max-width: 1024px) {
-      h1 { font-size: 12vw; margin-bottom: 0; }
-
-      .hero { height: 100vh; }
-      .hero-content-mask { padding-top: 0; padding-bottom: 0; }
-      .hero-wrapper { flex-direction: column; align-items: flex-start; justify-content: center; }
-      .hero-text-block { margin-bottom: 0; }
+      h1 { font-size: 12vw; margin-bottom: 1.5rem; }
+      .hero { height: 100vh;}
+      .container { padding: 0 20px;}
+      p.hero-subtitle { font-family: var(--font-main); font-size: 1.1rem; border-left: 2px solid var(--accent-color); padding-left: 15px; }
+      .hero-content-mask { padding-top: 140px; padding-bottom: 60px; }
+      .hero-wrapper { flex-direction: column; align-items: flex-start; justify-content: flex-start; padding-top: 0; }
+      .hero-text-block { width: 100%; margin-bottom: 40px; }
       .nav-links { display: none; } .desktop-spacer { display: none; } .menu-toggle { display: flex; }
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
       .blueprint-grid { opacity: 0.5; -webkit-mask-image: none !important; mask-image: none !important;}
@@ -916,6 +917,9 @@
             <span class="line-mask"><span class="rise-text delay-1">La tua nuova identità.</span></span>
             <span class="line-mask"><span class="rise-text delay-2">Scegli il modello da cui partire.</span></span>
           </h1>
+          <p class="hero-subtitle" style="margin-top: 30px;">
+            Sfoglia le nostre architetture. Ogni modello include l'anteprima desktop e mobile, <br>perché un'esperienza responsiva impeccabile è il primo segnale di professionalità.
+          </p>
         </div>
       </div>
     </div>

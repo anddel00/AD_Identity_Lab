@@ -54,7 +54,7 @@
     .intro-counter { font-family: var(--font-tech); font-size: clamp(1rem, 3vw, 1.5rem); color: #000; font-weight: 600; }
 
     /* --- LAYERS E HEADER --- */
-    .container { width: 95%; max-width: 1400px; margin: 0 auto; height: 100%; position: relative; z-index: 1; }
+    .container { width: 98%; max-width: 1400px; margin: 0 auto; height: 100%; position: relative; z-index: 1; }
     header { height: var(--header-height); position: fixed; width: 100%; top: 0; z-index: 9999; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); color: var(--text-color); }
     header.header-hidden { transform: translateY(-100%); }
     nav { display: flex; justify-content: space-between; align-items: center; height: 100%; position: relative; }
@@ -178,35 +178,130 @@
     }
 
     /* --- LE DUE ANIME (FOUNDERS) --- */
-    .founders-section { padding: 80px 0 100px 0; }
-    .founders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; }
+    .founders-section {
+      padding: 80px 0 100px 0;
+      position: relative; /* Fondamentale per contenere il bagliore */
+      overflow: hidden;
+    }
 
+    /* IL SEGRETO APPLE: Il bagliore sfumato dietro le card che verrà sfocato dal vetro */
+    .founders-section::before {
+      content: '';
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 60%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .founders-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+      margin-top: 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 1. IL WRAPPER CHE CONTIENE ENTRAMBE LE CARD */
+    .founder-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    /* 2. LA CARD AZZURRA SFASATA (DIETRO) */
+    .founder-offset-card {
+      position: absolute;
+      top: 25px;
+      left: -20px;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent-color), #00C6FF);
+      border-radius: 30px;
+      z-index: 0;
+
+      /* FLUIDITÀ: usiamo will-change e un easing più morbido, togliendo l'eccesso di attrito elastico */
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    /* Invertiamo lo sfasamento per la seconda card (Davide) per dare dinamismo al design */
+    div:nth-child(3) > .founder-offset-card {
+      left: 20px;
+      background: linear-gradient(225deg, var(--accent-color), #00C6FF);
+    }
+
+    /* 3. LA CARD DI VETRO PRINCIPALE (DAVANTI) */
     .founder-card {
-      background: var(--surface-color);
-      padding: 50px;
-      border-radius: 20px;
-      border: 1px solid var(--border-color);
+      /* VETRO PIÙ TRASPARENTE E CRISTALLINO (Opacità passata da 0.65 a 0.35) */
+      background: rgba(255, 255, 255, 0.35);
+
+      backdrop-filter: blur(3px) saturate(180%);
+      -webkit-backdrop-filter: blur(3px) saturate(180%);
+
+      border: 1px solid rgba(255, 255, 255, 0.6); /* Bordo ammorbidito */
+      padding: 60px;
+      border-radius: 30px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.02);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-    .founder-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        0 25px 50px -12px rgba(15, 23, 42, 0.08);
+      z-index: 1;
+
+      /* FLUIDITÀ: allineata alla card posteriore */
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
     }
 
-    /* Decoro Blueprint nella card */
+    /* ANIMAZIONE HOVER INTERATTIVA (Effetto separazione 3D) */
+    /* Ridotto leggermente il movimento (da 8px a 6px) per renderlo meno aggressivo e più elegante */
+    .founder-wrapper:hover .founder-card { transform: translateY(-6px) translateX(4px); }
+    .founder-wrapper:hover .founder-offset-card { transform: translateY(4px) translateX(-4px); }
+
+    div:nth-child(3):hover .founder-card { transform: translateY(-6px) translateX(-4px); }
+    div:nth-child(3):hover .founder-offset-card { transform: translateY(4px) translateX(4px); }
+
+    /* Decoro Blueprint (alleggerito in opacità) */
     .founder-card::before {
       content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px;
-      background-image: linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(37,99,235,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.08) 1px, transparent 1px);
       background-size: 20px 20px; border-bottom-left-radius: 100%; z-index: 0; pointer-events: none;
     }
+    .founder-role { font-family: var(--font-tech); font-size: 0.85rem; color: var(--accent-color); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; position: relative; z-index: 1; }
+    .founder-name { font-family: var(--font-logo); font-size: 3.5rem; font-weight: 600; color: var(--text-color); margin-bottom: 30px; letter-spacing: -1px; position: relative; z-index: 1; }
 
-    .founder-role { font-family: var(--font-tech); font-size: 0.85rem; color: var(--accent-color); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; position: relative; z-index: 1; }
-    .founder-name { font-family: var(--font-hero); font-size: 2.5rem; font-weight: 600; color: var(--text-color); margin-bottom: 25px; letter-spacing: -1px; position: relative; z-index: 1; }
-    .founder-desc { font-size: 1.1rem; color: var(--secondary-text); line-height: 1.6; position: relative; z-index: 1; }
+    .founder-desc {font-weight: 600; font-size: 1.1rem; color: var(--text-color) ; line-height: 1.6; position: relative; z-index: 1; }
 
+    /* LE MEGA VIRGOLETTE */
+    .founder-desc::before {
+      content: '“';
+      display: block;
+      font-family: Georgia, serif;
+      font-size: 6rem;
+      color: ghostwhite;
+      opacity: 0.5;
+      line-height: 0.2;
+      margin-top: 25px;
+      margin-left: -5px;
+    }
+
+    /* LA "E COMMERCIALE" GIGANTE */
+    .giant-ampersand {
+      font-family: var(--font-logo);
+      font-size: clamp(8rem, 14vw, 11rem);
+      color: black;
+      opacity: 0.1;
+      font-weight: 600;
+      line-height: 1;
+      margin: 10px 0;
+    }
     /* --- FOOTER --- */
     footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-color: #ffffff; position: relative; z-index: 10; font-size: 0.95rem; color: var(--secondary-text); }
     .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
@@ -220,6 +315,7 @@
     .social-link svg { fill: currentColor; width: 24px; height: 24px; }
 
     @media (max-width: 1024px) {
+      .container { padding: 0 20px;}
       .content-scroller { padding-top: 120px; }
       .manifesto-title { font-size: 3.2rem; }
       .manifesto-body { font-size: 1.15rem; margin-bottom: 40px; }
@@ -228,6 +324,8 @@
       .nav-links, .desktop-spacer { display: none; }
       .menu-toggle { display: flex; }
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+      .founder-offset-card { top: 15px; left: -10px; }
+      div:nth-child(3) > .founder-offset-card { left: 10px; }
     }
   </style>
 </head>
@@ -291,27 +389,29 @@
 
   <section class="founders-section">
     <div class="container">
-      <h2 class="manifesto-title revealed-element" style="font-size: 2.5rem; margin-bottom: 10px;">Le due anime del Lab.</h2>
-      <p class="manifesto-body revealed-element" style="font-size: 1.1rem; margin-bottom: 0;">Ingegneria Web e Strategia Sales. L'unione perfetta per dominare il mercato.</p>
+      <h2 class="manifesto-title revealed-element" style="font-size: clamp(3.5rem, 6vw, 5.5rem); margin-bottom: 20px;">Le due anime del Lab.</h2>      <p class="manifesto-body revealed-element" style="font-size: 1.1rem; margin-bottom: 0;">Ingegneria Web e Strategia Sales. L'unione perfetta per dominare il mercato.</p>
 
       <div class="founders-grid">
 
-        <div class="founder-card revealed-element" style="transition-delay: 0.1s;">
-          <div class="founder-role">Il Corporate Strategist</div>
-          <h3 class="founder-name">Davide</h3>
-          <p class="founder-desc">
-            "Da Senior Sales Engineer per colossi multinazionali, conosco esattamente le dinamiche interne delle aziende, la psicologia degli HR e come un professionista deve 'vendersi' nel mercato High-Ticket. <br><br>Il mio compito in A&D non è scrivere codice, ma <strong>analizzare la tua carriera</strong>. Definisco la strategia di posizionamento, individuo i tuoi punti di forza e strutturo la narrazione che farà scattare la Call-To-Action nella mente di chi ti valuta."
-          </p>
-        </div>
-
-        <div class="founder-card revealed-element" style="transition-delay: 0.3s;">
-          <div class="founder-role">L'Architetto Digitale</div>
+        <div class="founder-wrapper revealed-element" style="transition-delay: 0.1s;">
+          <div class="founder-offset-card"></div> <div class="founder-card"> <div class="founder-role">L'Architetto Digitale</div>
           <h3 class="founder-name">Andrea</h3>
           <p class="founder-desc">
-            "Il mio compito è tradurre la tua strategia in un'arma digitale ad altissime prestazioni. Non usiamo costruttori lenti o grafiche preimpostate. <br><br><strong>Scrivo codice puro</strong> e realizzo interfacce sartoriali, veloci e ottimizzate. Il risultato è un ecosistema web proprietario che domina i motori di ricerca e ti fa spiccare in un mare di template tutti uguali. Dal primo impatto visivo al funnel di conversione finale, tutto è ingegnerizzato per stupire."
+            Il mio compito è tradurre la tua strategia in un'arma digitale ad altissime prestazioni. Non usiamo costruttori lenti o grafiche preimpostate. <br><br><strong>Scrivo codice puro</strong> e realizzo interfacce sartoriali, veloci e ottimizzate. Il risultato è un ecosistema web proprietario che domina i motori di ricerca e ti fa spiccare in un mare di template tutti uguali. Dal primo impatto visivo al funnel di conversione finale, tutto è ingegnerizzato per stupire.
           </p>
         </div>
+        </div>
 
+        <div class="giant-ampersand revealed-element" style="transition-delay: 0.2s;">&</div>
+
+        <div class="founder-wrapper revealed-element" style="transition-delay: 0.3s;">
+          <div class="founder-offset-card"></div> <div class="founder-card"> <div class="founder-role">Il Corporate Strategist</div>
+          <h3 class="founder-name">Davide</h3>
+          <p class="founder-desc">
+            Da Senior Sales Engineer per colossi multinazionali, conosco esattamente le dinamiche interne delle aziende, la psicologia degli HR e come un professionista deve 'vendersi' nel mercato High-Ticket. <br><br>Il mio compito in A&D non è scrivere codice, ma <strong>analizzare la tua carriera</strong>. Definisco la strategia di posizionamento, individuo i tuoi punti di forza e strutturo la narrazione che farà scattare la Call-To-Action nella mente di chi ti valuta.
+          </p>
+        </div>
+        </div>
       </div>
     </div>
   </section>
