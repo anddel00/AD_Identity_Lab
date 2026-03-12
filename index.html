@@ -416,29 +416,82 @@
     }
     .pricing-section .section-title { margin-bottom: 80px; position: relative; z-index: 10; }
 
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 0; position: relative; z-index: 10;}
-
-    /* Card Standard (Light) */
-    .pricing-card {
-      background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 30px;
-      padding: 30px 25px; display: flex; flex-direction: column; height: 100%;
-      position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px; /* Aumentato leggermente il gap per farle respirare */
+      max-width: 950px; /* Limita la larghezza totale per mantenere le giuste proporzioni */
+      margin: 0 auto; /* Centra orizzontalmente l'intero blocco */
+      position: relative;
+      z-index: 10;
+    }
+    /* --- WRAPPER E ANIMAZIONI DI INGRESSO --- */
+    .pricing-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%; /* Serve per allungarle uguali nella griglia */
       opacity: 0; transform: translateY(50px);
-      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .pricing-card:nth-child(1) { transition-delay: 0.1s; }
-    .pricing-card:nth-child(2) { transition-delay: 0.25s; }
-    .pricing-card:nth-child(3) { transition-delay: 0.4s; }
+    .pricing-wrapper:nth-child(1) { transition-delay: 0.1s; }
+    .pricing-wrapper:nth-child(2) { transition-delay: 0.25s; }
 
-    .pricing-card.revealed { opacity: 1; transform: translateY(0); }
-    .pricing-card.revealed:hover { transition-delay: 0s !important; }
-    .pricing-card.revealed:not(.bestseller):hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); transform: translateY(-10px); }
+    .pricing-wrapper.revealed { opacity: 1; transform: translateY(0); }
+    .pricing-wrapper.revealed:hover { transition-delay: 0s !important; }
 
-    /* Il Trucco del Bestseller: Tema Scuro per farlo risaltare! */
-    .pricing-card.bestseller { transform: translateY(50px) scale(1.03); z-index: 10; background-color: #0F172A; border: none; box-shadow: 0 20px 50px rgba(37, 99, 235, 0.25); }
-    .pricing-card.bestseller.revealed { transform: scale(1.03); }
-    .pricing-card.bestseller.revealed:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(37, 99, 235, 0.4); }
+    /* --- LA CARD AZZURRA SFASATA (DIETRO) --- */
+    .pricing-offset-card {
+      position: absolute;
+      top: 25px;
+      left: -20px;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent-color), #00C6FF);
+      border-radius: 30px;
+      z-index: 0;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    /* Sfasatura invertita e gradiente premium "Dark" per il Bestseller */
+    .pricing-wrapper.bestseller-wrapper .pricing-offset-card {
+      background: linear-gradient(225deg, #0F172A, var(--accent-color));
+    }
+
+    /* --- LA CARD DI VETRO PRINCIPALE (DAVANTI) --- */
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.20);
+      backdrop-filter: blur(3px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 30px;
+      padding: 35px 30px; /* Aumentato leggermente il respiro interno */
+      display: flex; flex-direction: column; height: 100%;
+      position: relative;
+      z-index: 1;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 25px 50px -12px rgba(15, 23, 42, 0.08);
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+      will-change: transform;
+    }
+
+    /* VETRO SCURO PER IL BESTSELLER (Il vero tocco di classe) */
+    .pricing-card.bestseller {
+      background: rgba(15, 23, 42, 0.20); /* Vetro scuro traslucido */
+      border: 1px solid rgba(255, 255, 255, 0.15); /* Bordo di luce molto sottile */
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 25px 50px -12px rgba(15, 23, 42, 0.4);
+    }
+
+    /* --- ANIMAZIONE HOVER INTERATTIVA 3D --- */
+    .pricing-wrapper:hover .pricing-card { transform: translateY(-6px) translateX(4px); }
+    .pricing-wrapper:hover .pricing-offset-card { transform: translateY(4px) translateX(-4px); }
+
+    .pricing-wrapper.bestseller-wrapper:hover .pricing-card { transform: translateY(-6px) translateX(-4px); }
+    .pricing-wrapper.bestseller-wrapper:hover .pricing-offset-card { transform: translateY(4px) translateX(4px); }
 
     .badge-system {
       position: absolute; top: 15px; right: 20px; font-family: var(--font-tech); font-size: 0.65rem; font-weight: 600;
@@ -456,7 +509,7 @@
     .plan-recurring { font-size: 0.7rem; color: var(--accent-color); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 5px; line-height: 1.3; }
 
     .plan-features { list-style: none; margin-bottom: 25px; flex-grow: 1; }
-    .plan-features li { margin-bottom: 10px; font-size: 0.85rem; color: var(--secondary-text); display: flex; align-items: flex-start; line-height: 1.4;}
+    .plan-features li { margin-bottom: 10px; font-size: 0.85rem; color: var(--tex-color); display: flex; align-items: flex-start; line-height: 1.4; font-weight: 600;}
     .plan-features li svg { width: 16px; height: 16px; color: var(--accent-color); margin-right: 10px; margin-top: 2px; flex-shrink: 0; }
     .plan-features li strong { color: var(--text-color); font-weight: 700; }
 
@@ -521,22 +574,31 @@
     /* --- NUOVO BANNER CTA --- */
     .custom-plan-banner {
       display: flex;
+      background: rgba(255, 255, 255,0);
+      backdrop-filter: blur(2px) saturate(200%);
+      -webkit-backdrop-filter: blur(30px) saturate(200%);
       justify-content: space-between;
       align-items: center;
       gap: 40px;
       margin-top: 60px;
       padding: 40px 50px;
-      background: var(--surface-color);
       border-radius: 16px;
       border: 1px solid var(--border-color);
-      border-left: 4px solid var(--accent-color); /* Richiama il design "lab" */
-      box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+      border-left: 4px solid rgba(37, 99, 235, 0.6); /* L'azzurro lab, ma in versione vetro */      border-left-color: blur(2px) saturate(200%);  /* Richiama il design "lab" */
       position: relative;
       z-index: 10;
       /* Preparazione per l'animazione di entrata */
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8), /* Righetta di luce in alto */
+        0 15px 40px rgba(0, 0, 0, 0.04);
+      /* Preparazione per l'animazione di entrata */
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
     }
 
     .custom-plan-banner.revealed { opacity: 1; transform: translateY(0); }
@@ -628,6 +690,8 @@
       .pricing-card.bestseller { transform: none; }
       .pricing-card.bestseller.revealed { transform: translateY(0); }
       .pricing-card.bestseller:hover { transform: translateY(-5px); }
+      .pricing-offset-card { top: 15px; left: -10px; }
+      .pricing-wrapper.bestseller-wrapper .pricing-offset-card { left: 10px; }
 
       .custom-plan-banner { flex-direction: column; align-items: flex-start; padding: 30px; gap: 25px; }
       .btn-banner { width: 100%; text-align: center; }
@@ -763,7 +827,7 @@
       });
     }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
 
-    document.querySelectorAll('.why-item, .section-title, .pricing-card, .custom-plan-banner').forEach(item => observer.observe(item));
+    document.querySelectorAll('.why-item, .section-title, .pricing-wrapper, .custom-plan-banner').forEach(item => observer.observe(item));
 
     document.querySelectorAll('.expand-trigger').forEach(btn => {
       btn.addEventListener('click', function() {
@@ -1062,81 +1126,60 @@
 
       <div class="pricing-grid">
 
-        <div class="pricing-card">
-          <h3 class="plan-name">Identity</h3>
-          <p class="plan-target">Per Junior e figure emergenti che vogliono una presenza pulita.</p>
-          <div class="plan-price-wrapper">
-            <div class="plan-price-row">
-              <span class="plan-price-currency">€</span>
-              <span class="plan-price">949</span>
-              <span class="plan-price-vat">iva incl.</span>
+        <div class="pricing-wrapper revealed-element">
+          <div class="pricing-offset-card"></div>
+          <div class="pricing-card">
+            <h3 class="plan-name">Identity</h3>
+            <p class="plan-target">Per Junior e figure emergenti che vogliono una presenza pulita.</p>
+            <div class="plan-price-wrapper">
+              <div class="plan-price-row">
+                <span class="plan-price-currency">€</span>
+                <span class="plan-price">490</span>
+                <span class="plan-price-vat">iva incl.</span>
+              </div>
+              <div class="plan-recurring">con manutenzione, hosting e dominio inclusi per il <strong>primo anno</strong></div>
             </div>
-            <div class="plan-recurring">+ manutenzione, hosting e dominio inclusi per il primo anno</div>
+            <ul class="plan-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Sito One-Page con CV Digitale</strong></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Form di Contatto Diretto</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Ottimizzazione Mobile</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Conformità Privacy e Cookie</li>
+            </ul>
+            <button class="btn-pricing outline btn-modal-trigger" data-plan="Identity">Inizia con Identity</button>
+            <a href="progetti.html#templates-identity" class="link-discover-templates">
+              Guarda i modelli <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
           </div>
-          <ul class="plan-features">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Sito One-Page con CV Digitale</strong></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Form di Contatto Diretto</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Ottimizzazione Mobile</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Conformità Privacy e Cookie</li>
-          </ul>
-          <button class="btn-pricing outline btn-modal-trigger" data-plan="Identity">Inizia con Identity</button>
-          <a href="progetti.html#templates-identity" class="link-discover-templates">
-            Guarda i modelli <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-          </a>
         </div>
 
-        <div class="pricing-card bestseller">
-          <div class="badge-system"> IL PIÙ RICHIESTO </div>
-          <h3 class="plan-name">Professional</h3>
-          <p class="plan-target">Per Senior e figure professionali che vogliono sbaragliare la concorrenza.</p>
-          <div class="plan-price-wrapper">
-            <div class="plan-price-row">
-              <span class="plan-price-currency">€</span>
-              <span class="plan-price">1.349</span>
-              <span class="plan-price-vat">iva incl.</span>
+        <div class="pricing-wrapper bestseller-wrapper revealed-element">
+          <div class="pricing-offset-card"></div>
+          <div class="pricing-card bestseller">
+            <div class="badge-system"> IL PIÙ RICHIESTO </div>
+            <h3 class="plan-name">Professional</h3>
+            <p class="plan-target">Per Senior e figure professionali che vogliono sbaragliare la concorrenza.</p>
+            <div class="plan-price-wrapper">
+              <div class="plan-price-row">
+                <span class="plan-price-currency">€</span>
+                <span class="plan-price">990</span>
+                <span class="plan-price-vat">iva incl.</span>
+              </div>
+              <div class="plan-recurring">con manutenzione, hosting e dominio inclusi per il <strong>primo anno</strong></div>
             </div>
-            <div class="plan-recurring">+ manutenzione, hosting e dominio inclusi per il primo anno</div>
+            <ul class="plan-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Sito Multi-Pagina</strong> (Home, Profilo, Area Privata)</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Multi-lingua: Italiano e Inglese</strong></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Portfolio Progetti</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Responsive Design Curato</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Conformità Privacy e Cookie</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>SEO Ottimizzata</strong></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Google Analytics Setup</strong></li>
+            </ul>
+            <button class="btn-pricing solid btn-modal-trigger" data-plan="Professional">Scegli Professional</button>
+            <a href="progetti.html#templates-professional" class="link-discover-templates">
+              Guarda i modelli <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
           </div>
-          <ul class="plan-features">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Sito Multi-Pagina</strong> (Home, Profilo, Area Privata)</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Multi-lingua: Italiano e Inglese</strong></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Portfolio Progetti</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Responsive Design Curato</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Conformità Privacy e Cookie</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>SEO Ottimizzata</strong></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Google Analytics Setup</strong></li>
-          </ul>
-          <button class="btn-pricing solid btn-modal-trigger" data-plan="Professional">Scegli Professional</button>
-          <a href="progetti.html#templates-professional" class="link-discover-templates">
-            Guarda i modelli <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-          </a>
-        </div>
-
-        <div class="pricing-card">
-          <h3 class="plan-name">Executive</h3>
-          <p class="plan-target">Il pacchetto "senza pensieri" per Manager e Liberi Professionisti.</p>
-          <div class="plan-price-wrapper">
-            <div class="plan-price-row">
-              <span class="plan-price-currency">€</span>
-              <span class="plan-price">2.000</span>
-              <span class="plan-price-vat">iva incl.</span>
-            </div>
-            <div class="plan-recurring">+ manutenzione, hosting e dominio inclusi per il primo anno</div>
-          </div>
-          <ul class="plan-features">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Architettura su misura</strong> (fino a 5 pagine)</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Multi-lingua: Italiano e Inglese</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Portfolio Progetti</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Responsive Design Curato</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Conformità Privacy e Cookie</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>SEO Ottimizzata</strong></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Analytics Avanzato con Eventi</strong></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <strong>Backup e Recovery Periodici</strong></li>
-          </ul>
-          <button class="btn-pricing outline btn-modal-trigger" data-plan="Executive">Richiedi Executive</button>
-          <a href="progetti.html#templates-executive" class="link-discover-templates">
-            Guarda i modelli <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-          </a>
         </div>
       </div>
 
