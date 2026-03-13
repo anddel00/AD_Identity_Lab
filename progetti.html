@@ -481,7 +481,22 @@
     .video-lightbox-close:hover { color: var(--accent-color); }
 
     /* --- CUSTOMIZATION NOTICE --- */
-    .customization-notice { margin: 0 auto 100px auto; max-width: 1100px; background: var(--surface-color); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); padding: 40px; border-radius: 16px; display: flex; gap: 30px; align-items: center; opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.02);}
+    .customization-notice {
+      margin: 0 auto 100px auto;
+      max-width: 1100px;
+      background: var(--surface-color);
+      padding: 40px;
+      border-radius: 16px;
+      display: flex;
+      gap: 30px;
+      align-items: center; opacity: 0;
+      transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.02); background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(2px) saturate(200%);
+      -webkit-backdrop-filter: blur(2px) saturate(200%);
+
+      /* Bordi traslucidi */
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-left: 4px solid rgba(37, 99, 235, 0.8);}
     .customization-notice.revealed { opacity: 1; transform: translateY(0); }
     .customization-notice svg { width: 45px; height: 45px; color: var(--accent-color); flex-shrink: 0; }
     .customization-text h3 { font-size: 1.5rem; color: var(--text-color); margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; font-weight: 800;}

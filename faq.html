@@ -124,18 +124,57 @@
     }
     .section-title.revealed { opacity: 1; transform: translateY(0) scaleY(1.05); }
 
-    /* --- CONTENUTO PAGINA FAQ --- */
+    /* --- CONTENUTO PAGINA FAQ CON GRIGLIA --- */
     .content-scroller {
       position: relative;
       z-index: 20;
       background-color: var(--bg-color);
       min-height: 100vh;
-      padding-top: 150px; /* Spazio per l'header */
+      /* PADDING rimosso da qui e spostato nell'hero! */
+      clip-path: inset(0 0 0 0); /* Fix parallasse mobile */
     }
 
+    /* La griglia di sfondo fissa per le card */
+    .content-scroller::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background-image:
+        linear-gradient(to right, rgb(218, 228, 255) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(218, 228, 255) 1px, transparent 1px);
+      background-size: 100px 100px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* --- GRIGLIA EFFETTO TORCIA --- */
+    .blueprint-grid {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgb(218, 228, 255) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(218, 228, 255) 1px, transparent 1px);
+      background-size: 100px 100px;
+      /* Maschera radiale che si aggancia alle coordinate del mouse */
+      -webkit-mask-image: radial-gradient(circle 350px at var(--mouse-x) var(--mouse-y), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 350px at var(--mouse-x) var(--mouse-y), black 0%, transparent 100%);
+    }
+
+    /* --- HERO DELLE FAQ (Fondo bianco + Torcia) --- */
     .faq-hero {
-      text-align: center;
-      padding-bottom: 60px;
+      position: relative; /* Fondamentale per la griglia interna */
+      text-align: left;
+      padding-top: 150px; /* Spostato qui per riempire lo spazio sotto l'header */
+      padding-bottom: 80px;
+      background-color: var(--surface-color); /* Sfondo bianco pieno */
+      overflow: hidden; /* Taglia la torcia che esce dai bordi */
+    }
+
+    /* --- PREMIUM SEPARATOR --- */
+    .premium-separator {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(37,99,235,0.3), rgba(37,99,235,0.8), rgba(37,99,235,0.3), transparent);
+      position: relative; z-index: 10;
     }
 
     .hero-subtitle {
@@ -143,26 +182,50 @@
       color: var(--secondary-text);
       line-height: 1.6;
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0; /* Rimuove il "margin: 0 auto" che lo forzava al centro */
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
     .hero-subtitle.revealed { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
 
-    /* --- ACCORDION FAQ --- */
+    /* --- ACCORDION FAQ (EFFETTO GLASSMORPHISM) --- */
     .faq-accordion {
-      max-width: 800px;
-      margin: 0 auto 100px auto;
-      border-top: 1px solid var(--border-color);
+      max-width: 950px; /* Allargato leggermente per allinearsi al layout premium */
+      margin: 0 auto 100px auto; /* <--- MODIFICA QUI: Aggiungi "auto" a destra e sinistra */
+      /* Il Vetro Trasparente */
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(3px) saturate(200%);
+      -webkit-backdrop-filter: blur(3px) saturate(200%);
+
+      /* Bordi e Ombre Apple Style */
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 30px;
+      padding: 10px 50px 30px 50px; /* Padding interno per non far toccare il testo ai bordi */
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 25px 50px -12px rgba(15, 23, 42, 0.05);
+
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.4s ease;
     }
+
+    .faq-accordion:hover {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 30px 60px -12px rgba(37, 99, 235, 0.15); /* Leggero bagliore azzurro all'hover */
+    }
+
     .faq-accordion.revealed { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
 
     .faq-item {
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.1); /* Bordo separatore delicato e semi-trasparente */
+    }
+
+    /* Nasconde la linea finale per non sporcare il bordo arrotondato del vetro */
+    .faq-item:last-child {
+      border-bottom: none;
     }
 
     .faq-question {
@@ -241,6 +304,11 @@
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
       .faq-question { font-size: 1.1rem; }
       .faq-answer p { font-size: 1rem; }
+      .faq-accordion {
+        padding: 15px 25px 25px 25px; /* Riduce i margini interni su smartphone */
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.10); /* Leggermente più bianco su mobile per massima leggibilità */
+      }
     }
   </style>
 </head>
@@ -284,7 +352,9 @@
 
 <div class="content-scroller">
   <section class="faq-hero">
-    <div class="container">
+    <div class="blueprint-grid"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
       <h1 class="section-title">Domande Frequenti.</h1>
       <p class="hero-subtitle">
         Trasparenza totale sul nostro metodo di lavoro.<br>
@@ -293,7 +363,9 @@
     </div>
   </section>
 
-  <section>
+  <div class="premium-separator"></div>
+
+  <section style="padding-top: 80px;">
     <div class="container">
       <div class="faq-accordion">
 
@@ -316,8 +388,15 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Il tuo ecosistema digitale sarà online e perfettamente operativo entro 10 giorni lavorativi dalla ricezione dei tuoi materiali (CV e foto). Ci prendiamo il tempo necessario per curare ogni millimetro di codice, eseguire i test di performance e garantirti un prodotto impeccabile e pronto per il mercato.</p>
-            </div>
+              <p>I tempi operativi standard sono di <strong>15 giorni</strong> a partire dalla ricezione del pagamento. Tuttavia, il processo inizia sempre con una consulenza conoscitiva (telefonica o via Meet): il pagamento avviene solo <em>dopo</em> questo incontro, perché per noi è fondamentale conoscere chi abbiamo davanti per configurare l'architettura digitale perfetta per te.</p>
+              <br>
+              <p>Da quel momento, il nostro cronoprogramma è diviso in due fasi:</p>
+              <ul style="list-style-type: none; padding-left: 0; margin-top: 10px;">
+                <li style="margin-bottom: 10px;"><strong>1. Bozza e Allineamento (Primi 5 giorni):</strong> Elaboriamo la struttura e ti inviamo un'email con la bozza del progetto. Fisseremo subito una rapida call per confermarla o rimodellarla in base ai tuoi feedback.</li>
+                <li><strong>2. Sviluppo e Deploy (Successivi 10 giorni):</strong> Ricevuta la tua approvazione, partono i 10 giorni di sviluppo tecnico vero e proprio. Al termine, faremo un'ultima call di revisione finale e procederemo con il deploy immediato (messa online).</li>
+              </ul>
+              <br>
+              <p>Salvo ritardi nell'invio dei materiali o imprevisti, in 15 giorni esatti la tua nuova identità digitale sarà pronta a dominare il mercato.</p>            </div>
           </div>
         </div>
 
@@ -328,8 +407,44 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Oltre alla messa in produzione del tuo sito web (con il link ufficiale pronto da inserire su LinkedIn), riceverai un report in PDF con la mappatura tecnica della tua pagina. Ti forniremo inoltre gli accessi alla dashboard Analytics dedicata: in questo modo potrai monitorare in tempo reale il traffico sul tuo profilo e capire quanti recruiter stanno visualizzando le tue competenze.</p>
-            </div>
+              <p>A lavoro ultimato, avrai immediatamente a disposizione tutto ciò che serve per presentarti al mercato con la tua nuova veste digitale. Nello specifico ti consegneremo:</p>
+              <br>
+              <ul style="list-style-type: none; padding-left: 0; margin-top: 10px; margin-bottom: 20px;">
+
+                <li style="display: flex; align-items: center; margin-bottom: 20px;">
+                  <div style="flex: 0 0 24px; text-align: center; margin-right: 15px;">
+                    <svg width="20" height="20" style="color:var(--accent-color);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <strong>Il link definitivo e operativo del tuo sito:</strong> Già testato, ottimizzato per ogni dispositivo e pronto per essere incollato in primo piano sul tuo profilo LinkedIn, nel tuo CV o inviato direttamente ad Headhunter e HR.
+                  </div>
+                </li>
+
+                <li style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+                  <div style="flex: 0 0 24px; text-align: center; margin-right: 15px; margin-top: 2px;">
+                    <svg width="20" height="20" style="color:var(--accent-color);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="16" y1="13" x2="8" y2="13"></line>
+                      <line x1="16" y1="17" x2="8" y2="17"></line>
+                      <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <strong>L'Executive Summary del progetto (in formato PDF):</strong> Un documento ufficiale che rappresenta la "carta d'identità" della tua infrastruttura. Al suo interno troverai:
+                    <ul style="list-style-type: disc; padding-left: 20px; margin-top: 10px; color: var(--secondary-text); font-size: 0.95rem;">
+                      <li style="margin-bottom: 8px;">Il riepilogo del piano scelto e il relativo investimento.</li>
+                      <li style="margin-bottom: 8px;">La mappatura completa del sito (Sitemap), con un riassunto dei contenuti inseriti in ciascuna sezione.</li>
+                      <li>Le specifiche del servizio, incluse la data di attivazione e la scadenza annuale di hosting e dominio.</li>
+                    </ul>
+                  </div>
+                </li>
+
+              </ul>
+              <p>Il nostro obiettivo è consegnarti non solo un prodotto ad alte prestazioni, ma anche il pieno controllo e la massima trasparenza su ciò che hai acquistato.</p>            </div>
           </div>
         </div>
 
@@ -340,21 +455,36 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              <p>Il mercato del lavoro è dinamico, e il tuo sito deve esserlo altrettanto. Includiamo 2 cicli di revisione gratuiti all'anno per aggiornare ruoli, competenze, cambiare foto o testi. Per quanto riguarda la manutenzione tecnica (sicurezza, uptime del server, bugfix), ce ne occupiamo noi al 100%, senza limiti e senza costi aggiuntivi. Il tuo sito sarà sempre online e performante.</p>
-            </div>
-          </div>
-        </div>
+              <p>Il mercato del lavoro è dinamico, e la tua infrastruttura digitale deve evolversi con te. Per garantirti il massimo dell'efficienza, abbiamo strutturato la nostra assistenza su due livelli:</p>
+              <br>
+              <ul style="list-style-type: none; padding-left: 0; margin-top: 10px; margin-bottom: 10px;">
 
-        <div class="faq-item">
-          <button class="faq-question">
-            <span>5. Il mio sito sarà letto dai software ATS aziendali?</span>
-            <div class="faq-icon"></div>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              <p>I software ATS scansionano i file di testo, non i siti web. Ma il metodo A&D scavalca il problema alla radice, cambiando le dinamiche di assunzione. Il nostro obiettivo non è farti finire in un database automatico, ma farti notare dall'HR <em>umano</em>.<br><br>
-                Progettiamo il tuo sito come un vero e proprio "funnel" di conversione: non inseriamo un banale tasto "Scarica CV" (che chiude l'interazione in modo freddo), ma guidiamo il recruiter attraverso il tuo percorso. Alla fine, troverà una Call to Action strategica: <strong>"Richiedi CV completo"</strong>. Questo crea un contatto diretto. Chi ti scriverà avrà già analizzato e apprezzato il tuo profilo, garantendoti interazioni solo con recruiter caldamente interessati e pronti al colloquio.</p>
-            </div>
+                <li style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+                  <div style="flex: 0 0 24px; text-align: center; margin-right: 15px; margin-top: 2px;">
+                    <svg width="20" height="20" style="color:var(--accent-color);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <strong>Aggiornamenti di Contenuto (3 cicli annui):</strong> Per le modifiche estetiche o testuali (cambio foto, aggiunta di nuove esperienze lavorative, aggiornamento delle competenze), il piano include 3 interventi gratuiti all'anno. Sono perfetti per allineare il sito ai tuoi scatti di carriera.
+                  </div>
+                </li>
+
+                <li style="display: flex; align-items: flex-start;">
+                  <div style="flex: 0 0 24px; text-align: center; margin-right: 15px; margin-top: 2px;">
+                    <svg width="20" height="20" style="color:var(--accent-color);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                      <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                      <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                      <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <strong>Supporto Tecnico (Illimitato):</strong> Per qualsiasi anomalia, dubbio o problema di infrastruttura (sicurezza, uptime del server, bugfix), puoi contattarci in qualsiasi momento. La manutenzione tecnica è gestita da noi al 100%, senza limiti e senza costi aggiuntivi, per garantirti un ecosistema costantemente online e ad alte prestazioni.
+                  </div>
+                </li>
+
+              </ul>            </div>
           </div>
         </div>
 
@@ -505,6 +635,12 @@
         lastScrollTop = scrollY <= 0 ? 0 : scrollY;
       });
     });
+  });
+
+  // Logica Mouse Torcia (Adattata per lo scorrimento della pagina)
+  document.addEventListener('mousemove', (e) => {
+    document.documentElement.style.setProperty('--mouse-x', e.pageX + 'px');
+    document.documentElement.style.setProperty('--mouse-y', e.pageY + 'px');
   });
 </script>
 
