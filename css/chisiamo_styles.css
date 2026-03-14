@@ -67,6 +67,53 @@ header.over-blue .menu-toggle span { background-color: #FFFFFF; transition: back
 .nav-item a span { display: block; height: 24px; line-height: 24px; }
 .nav-item a span.hover-text { color: var(--accent-color); }
 .nav-item:hover a { transform: translateY(-24px); }
+
+  /* --- BOTTONE LINGUA PREMIUM (DESKTOP) --- */
+  .lang-switch-container {
+    margin-left: 20px;
+  }
+
+  .lang-switch-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-tech);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    color: var(--text-color);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Transizione ultra-fluida */
+  }
+
+  /* --- EFFETTO VETRO HOVER BASE (Sfondo chiaro) --- */
+  .lang-switch-btn:hover {
+    background-color: rgba(37, 99, 235, 0.08);
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    border-color: rgba(37, 99, 235, 0.3);
+    color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 10px rgba(37, 99, 235, 0.06),
+      inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  }
+
+  /* --- EFFETTO VETRO HOVER BLU (Quando l'header scorre) --- */
+  header.over-blue .lang-switch-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Bianco ghiaccio trasparente */
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.1),
+      inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  }
+
+
 .desktop-spacer { width: 60px; display: block; }
 .nav-item.active-nav a { transform: translateY(0) !important; cursor: default; }
 
