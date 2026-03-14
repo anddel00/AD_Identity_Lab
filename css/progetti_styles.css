@@ -533,27 +533,57 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 .video-lightbox-close:hover { color: var(--accent-color); }
 
 /* --- CUSTOMIZATION NOTICE --- */
-.customization-notice {
-  margin: 0 auto 100px auto;
-  max-width: 1100px;
-  background: var(--surface-color);
-  padding: 40px;
-  border-radius: 16px;
-  display: flex;
-  gap: 30px;
-  align-items: center; opacity: 0;
-  transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.02); background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(2px) saturate(200%);
-  -webkit-backdrop-filter: blur(2px) saturate(200%);
-
-  /* Bordi traslucidi */
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-left: 4px solid rgba(37, 99, 235, 0.8);}
 .customization-notice.revealed { opacity: 1; transform: translateY(0); }
 .customization-notice svg { width: 45px; height: 45px; color: var(--accent-color); flex-shrink: 0; }
 .customization-text h3 { font-size: 1.5rem; color: var(--text-color); margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; font-weight: 800;}
 .customization-text p { color: var(--secondary-text); font-size: 1.05rem; line-height: 1.6; margin: 0; font-weight: 400;}
 .customization-text strong { color: var(--text-color); font-weight: 700; }
+
+  /* --- SEZIONE CUSTOMIZATION CON GRIGLIA --- */
+  .customization-section {
+    position: relative;
+    padding: 100px 0; /* Crea respiro sopra e sotto la card */
+    background-color: var(--bg-color);
+  }
+
+  .static-grid-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+      linear-gradient(to right, rgb(218, 228, 255) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(218, 228, 255) 1px, transparent 1px);
+    background-size: 100px 100px;
+    z-index: 0;
+    opacity: 0.7;
+    pointer-events: none;
+    /* Maschera che fa sfumare la griglia morbidamente ai bordi superiore e inferiore */
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  }
+
+  .customization-notice {
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 40px;
+    border-radius: 16px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+
+    /* L'effetto Vetro potenziato per la griglia */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(2px) saturate(200%);
+    -webkit-backdrop-filter: blur(2px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.05);
+  }
+
+  .customization-notice.revealed { opacity: 1; transform: translateY(0); }
+
 
 /* --- FOOTER & MODAL --- */
 footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-color: var(--surface-color); position: relative; z-index: 10; font-size: 0.95rem; color: var(--secondary-text); }
