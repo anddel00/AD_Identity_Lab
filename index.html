@@ -27,6 +27,7 @@
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/index_styles.css">
+  <link rel="stylesheet" href="css/cookie_styles.css">
 
 </head>
 <body class="is-loading">
@@ -445,7 +446,22 @@
   </div>
 </div>
 
+<!--COOKIE BANNER-->
+<div id="cookieBanner" class="cookie-banner">
+  <div class="container cookie-container">
+    <div class="cookie-text">
+      <p>Utilizziamo cookie tecnici per il funzionamento del sito e cookie analitici per capire come gli utenti interagiscono con esso. Puoi scegliere di accettarli tutti o gestire le preferenze. Leggi la nostra <a href="cookie.html">Cookie Policy</a>.</p>
+    </div>
+    <div class="cookie-buttons">
+      <button id="rejectCookies" class="btn-cookie-outline">Solo essenziali</button>
+      <button id="acceptCookies" class="btn-cookie-solid">Accetta Tutti</button>
+    </div>
+  </div>
+</div>
+
 <!-- Script per la pagina principale -->
 <script src="js/index.js"></script>
+<script src="js/cookie.js"></script> <!--script per il banner di cookie-->
+
 </body>
 </html>

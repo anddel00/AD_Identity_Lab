@@ -1,0 +1,93 @@
+/* ========================================================================= */
+/* --- COOKIE BANNER PREMIUM --- */
+/* ========================================================================= */
+.cookie-banner {
+  position: fixed;
+  bottom: -100%; /* Nascosto di default */
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  z-index: 9999;
+  padding: 20px 0;
+  transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.cookie-banner.show {
+  bottom: 0; /* Appare morbido dal basso */
+}
+
+.cookie-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.cookie-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--secondary-text);
+  line-height: 1.6;
+}
+
+.cookie-text a {
+  color: var(--text-color);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cookie-text a:hover {
+  color: var(--accent-color);
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.cookie-buttons button {
+  padding: 10px 20px;
+  font-family: var(--font-inter);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cookie-outline {
+  background: transparent;
+  color: var(--secondary-text);
+  border: 1px solid #CBD5E1;
+}
+
+.btn-cookie-outline:hover {
+  background: #F1F5F9;
+  color: var(--text-color);
+}
+
+.btn-cookie-solid {
+  background: var(--accent-color);
+  color: #fff;
+  border: 1px solid var(--accent-color);
+}
+
+.btn-cookie-solid:hover {
+  background: #1d4ed8; /* Un blu leggermente più scuro */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cookie-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .cookie-buttons {
+    flex-direction: column;
+  }
+}
