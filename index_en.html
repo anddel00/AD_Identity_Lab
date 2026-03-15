@@ -348,7 +348,7 @@
             <li><a href="progetti_en.html">Templates</a></li>
             <li><a href="chisiamo_en.html">About Us</a></li>
             <li><a href="faq_en.html">FAQ</a></li>
-            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#" class="open-custom-modal">Contact us</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -374,6 +374,8 @@
   </footer>
 </div>
 
+<!--MODAL DI CONTANTTO-->
+
 <div class="modal-overlay" id="planModal">
   <div class="modal-box">
     <div class="modal-close" id="closePlanModal">&times;</div>
@@ -393,7 +395,14 @@
         <div class="form-group">
           <input type="tel" name="Telefono" class="form-input" placeholder="Phone Number (Optional)" autocomplete="off">
         </div>
-
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="privacyConsentPlan" name="Privacy_Consent">
+            <span class="checkmark" id="privacyCheckmarkPlan"></span>
+            <span class="checkbox-text">I have read the <a href="privacy_en.html" target="_blank">Privacy Policy</a> and consent to the processing of my data to handle this request.</span>
+          </label>
+          <div id="privacyErrorPlan" class="privacy-error-msg">You must accept the Privacy Policy to proceed.</div>
+        </div>
         <button type="submit" class="btn-submit" id="generatePlanBtn">Send Request</button>
       </form>
     </div>
@@ -422,7 +431,14 @@
         <div class="form-group">
           <textarea name="Messaggio" id="customMessage" class="form-input" placeholder="Tell us about your goals or your current situation..." rows="4" required></textarea>
         </div>
-
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="privacyConsentCustom" name="Privacy_Consent">
+            <span class="checkmark" id="privacyCheckmarkCustom"></span>
+            <span class="checkbox-text">I have read the <a href="privacy_en.html" target="_blank">Privacy Policy</a> and consent to the processing of my data to handle this request.</span>
+          </label>
+          <div id="privacyErrorCustom" class="privacy-error-msg">You must accept the Privacy Policy to proceed.</div>
+        </div>
         <button type="submit" class="btn-submit" id="sendCustomEmailBtn">Send Request</button>
       </form>
     </div>

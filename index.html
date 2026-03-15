@@ -348,6 +348,7 @@
             <li><a href="progetti.html">Templates</a></li>
             <li><a href="chi-siamo.html">Chi Siamo</a></li>
             <li><a href="faq.html">FAQ</a></li>
+            <li><a href="#" class="open-custom-modal">Contattaci</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -369,8 +370,11 @@
           </ul>
       </div>
     </div>
+</div>
   </footer>
 </div>
+
+<!--MODAL DI CONTANTTO-->
 
 <div class="modal-overlay" id="planModal">
   <div class="modal-box">
@@ -391,7 +395,14 @@
         <div class="form-group">
           <input type="tel" name="Telefono" class="form-input" placeholder="Numero di Telefono" autocomplete="off">
         </div>
-
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="privacyConsentPlan" name="Privacy_Consent">
+            <span class="checkmark" id="privacyCheckmarkPlan"></span>
+            <span class="checkbox-text">Dichiaro di aver letto la <a href="privacy.html" target="_blank">Privacy Policy</a> e acconsento al trattamento dei dati per la gestione della richiesta.</span>
+          </label>
+          <div id="privacyErrorPlan" class="privacy-error-msg">È necessario accettare la Privacy Policy per procedere.</div>
+        </div>
         <button type="submit" class="btn-submit" id="generatePlanBtn">Invia Richiesta</button>
       </form>
     </div>
@@ -420,7 +431,14 @@
         <div class="form-group">
           <textarea name="Messaggio" id="customMessage" class="form-input" placeholder="Parlaci del tuo obiettivo o della tua situazione attuale..." rows="4" required></textarea>
         </div>
-
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="privacyConsentCustom" name="Privacy_Consent">
+            <span class="checkmark" id="privacyCheckmarkCustom"></span>
+            <span class="checkbox-text">Dichiaro di aver letto la <a href="privacy.html" target="_blank">Privacy Policy</a> e acconsento al trattamento dei dati per la gestione della richiesta.</span>
+          </label>
+          <div id="privacyErrorCustom" class="privacy-error-msg">È necessario accettare la Privacy Policy per procedere.</div>
+        </div>
         <button type="submit" class="btn-submit" id="sendCustomEmailBtn">Invia Richiesta</button>
       </form>
     </div>
@@ -429,6 +447,5 @@
 
 <!-- Script per la pagina principale -->
 <script src="js/index.js"></script>
-
 </body>
 </html>

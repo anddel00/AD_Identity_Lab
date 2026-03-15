@@ -164,8 +164,7 @@
           </ul>
 
           <div class="action-btn-wrapper">
-            <a href="#" class="btn-visit btn-visit-outline btn-modal-trigger">Start with Identity</a>
-          </div>
+            <a href="#" class="btn-visit btn-visit-outline btn-modal-trigger" data-plan="Identity Plan">Start with Identity</a>          </div>
         </div>
 
         <div class="tier-gallery-master">
@@ -291,7 +290,7 @@
           </ul>
 
           <div class="action-btn-wrapper">
-            <a href="#" class="btn-visit btn-modal-trigger">Choose Professional</a>
+            <a href="#" class="btn-visit btn-modal-trigger" data-plan="Professional Plan">Choose Professional</a>
           </div>
         </div>
 
@@ -445,7 +444,7 @@
             <li><a href="index_en.html">Home</a></li>
             <li><a href="chisiamo_en.html">About Us</a></li>
             <li><a href="faq_en.html">FAQ</a></li>
-            <li><a href="#" class="btn-modal-trigger">Contact</a></li>
+            <li><a href="#" class="open-custom-modal">Contact us</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -471,18 +470,70 @@
   </footer>
 </div>
 
+<!--MODAL DI CONTANTTO-->
+<div class="modal-overlay" id="planModal">
+  <div class="modal-box">
+    <div class="modal-close" id="closePlanModal">&times;</div>
+    <div id="planFormContainer">
+      <h3 class="modal-title">Initialize Request</h3>
+      <p class="modal-desc">Tell us who you are. We'll get to work immediately.</p>
+
+      <form id="planForm">
+        <input type="hidden" id="selectedPlanInput" name="Piano_Scelto" value="">
+
+        <div class="form-group">
+          <input type="text" name="Nome" id="planUserName" class="form-input" placeholder="Your Name and Surname" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input type="email" name="Email" class="form-input" placeholder="Your Email" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input type="tel" name="Telefono" class="form-input" placeholder="Phone Number (Optional)" autocomplete="off">
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="privacyConsentPlan" name="Privacy_Consent">
+            <span class="checkmark" id="privacyCheckmarkPlan"></span>
+            <span class="checkbox-text">I have read the <a href="privacy_en.html" target="_blank">Privacy Policy</a> and consent to the processing of my data to handle this request.</span>
+          </label>
+          <div id="privacyErrorPlan" class="privacy-error-msg">You must accept the Privacy Policy to proceed.</div>
+        </div>
+        <button type="submit" class="btn-submit" id="generatePlanBtn">Send Request</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="customPlanModal">
   <div class="modal-box">
     <div class="modal-close" id="closeCustomModal">&times;</div>
     <div id="customFormContainer">
-      <h3 class="modal-title">Talk to us</h3>
-      <p class="modal-desc">Leave your contacts to schedule a quick intro call or request an analysis.</p>
+      <h3 class="modal-title">Request an Analysis</h3>
+      <p class="modal-desc">Leave your contacts and briefly describe your situation.</p>
+
       <form id="customForm">
-        <input type="hidden" name="Tipo_Richiesta" value="General Contact / Audit">
-        <div class="form-group"><input type="text" name="Nome" id="customName" class="form-input" placeholder="Name and Surname" required autocomplete="off"></div>
-        <div class="form-group"><input type="email" name="Email" id="customEmail" class="form-input" placeholder="Your Email" required autocomplete="off"></div>
-        <div class="form-group"><input type="tel" name="Telefono" id="customPhone" class="form-input" placeholder="Phone Number" autocomplete="off"></div>
-        <div class="form-group"><textarea name="Messaggio" id="customMessage" class="form-input" placeholder="Tell us about your goals or your current situation..." rows="4" required></textarea></div>
+        <input type="hidden" name="Tipo_Richiesta" value="Analisi Personalizzata">
+
+        <div class="form-group">
+          <input type="text" name="Nome" id="customName" class="form-input" placeholder="Name and Surname" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input type="email" name="Email" id="customEmail" class="form-input" placeholder="Your Email" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input type="tel" name="Telefono" id="customPhone" class="form-input" placeholder="Phone Number" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <textarea name="Messaggio" id="customMessage" class="form-input" placeholder="Tell us about your goals or your current situation..." rows="4" required></textarea>
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="privacyConsentCustom" name="Privacy_Consent">
+            <span class="checkmark" id="privacyCheckmarkCustom"></span>
+            <span class="checkbox-text">I have read the <a href="privacy_en.html" target="_blank">Privacy Policy</a> and consent to the processing of my data to handle this request.</span>
+          </label>
+          <div id="privacyErrorCustom" class="privacy-error-msg">You must accept the Privacy Policy to proceed.</div>
+        </div>
         <button type="submit" class="btn-submit" id="sendCustomEmailBtn">Send Request</button>
       </form>
     </div>

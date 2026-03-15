@@ -1,239 +1,357 @@
+// CONFIGURATION
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xykddzpe";
+const PRELOADER_CONFIG = {
+  progressInterval: 70,
+  minIncrement: 3,
+  maxIncrement: 12,
+  implosionDelay: 300,
+  contentFadeDelay: 300,
+  blueLayerDelay: 300,
+  removeDelay: 1000
+};
+const SCROLL_CONFIG = {
+  headerHideThreshold: 100,
+  blueBackgroundThreshold: 150,
+  headerOverlapThreshold: 80,
+  fadeDistance: 800,
+  observerThreshold: 0.15,
+  observerRootMargin: "0px 0px -50px 0px"
+};
 
-  // LOGICA PRELOADER INTELLIGENTE
-  document.addEventListener('DOMContentLoaded', () => {
+// PRELOADER LOGIC
+function initPreloader() {
   const preloader = document.getElementById('intro-preloader');
   const introContent = document.querySelector('.intro-content');
   const counterEl = document.querySelector('.intro-counter');
   const layerWhite = document.querySelector('.layer-white');
   const layerBlue = document.querySelector('.layer-blue');
-
   const isFirstVisit = !sessionStorage.getItem('ad_visited');
+
   sessionStorage.setItem('ad_visited', 'true');
 
+  function updateProgress(progress) {
+    if(counterEl) counterEl.innerText = progress + '%';
+  }
+
+  function animateProgress() {
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * PRELOADER_CONFIG.maxIncrement) + PRELOADER_CONFIG.minIncrement;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        updateProgress(progress);
+        setTimeout(() => triggerImplosion(true), PRELOADER_CONFIG.implosionDelay);
+      } else {
+        updateProgress(progress);
+      }
+    }, PRELOADER_CONFIG.progressInterval);
+  }
+
+  function triggerImplosion(shouldFadeContent) {
+    if (shouldFadeContent && introContent) {
+      introContent.style.opacity = '0';
+      introContent.style.transform = 'translateY(-10px)';
+    }
+
+    const delayCollasso = shouldFadeContent ? PRELOADER_CONFIG.contentFadeDelay : 0;
+    setTimeout(() => {
+      document.body.classList.remove('is-loading');
+      document.body.classList.add('start-animations');
+      if(layerWhite) layerWhite.classList.add('collapse');
+
+      setTimeout(() => {
+        if(layerBlue) layerBlue.classList.add('collapse');
+        setTimeout(() => { if(preloader) preloader.remove(); }, PRELOADER_CONFIG.removeDelay);
+      }, PRELOADER_CONFIG.blueLayerDelay);
+    }, delayCollasso);
+  }
+
   if (isFirstVisit) {
-  let progress = 0;
-  const interval = setInterval(() => {
-  progress += Math.floor(Math.random() * 12) + 3;
-  if (progress >= 100) {
-  progress = 100;
-  clearInterval(interval);
-  counterEl.innerText = progress + '%';
-  setTimeout(triggerImplosion, 300);
-} else {
-  counterEl.innerText = progress + '%';
-}
-}, 70);
-} else {
-  introContent.style.display = 'none';
-  setTimeout(triggerImplosion, 50);
+    animateProgress();
+  } else {
+    if(introContent) introContent.style.display = 'none';
+    setTimeout(() => triggerImplosion(false), 50);
+  }
 }
 
-  function triggerImplosion() {
-  if(isFirstVisit) {
-  introContent.style.opacity = '0';
-  introContent.style.transform = 'translateY(-10px)';
-}
-
-  const delayCollasso = isFirstVisit ? 300 : 0;
-
-  setTimeout(() => {
-  document.body.classList.remove('is-loading');
-  document.body.classList.add('start-animations');
-  layerWhite.classList.add('collapse');
-
-  setTimeout(() => {
-  layerBlue.classList.add('collapse');
-  setTimeout(() => { preloader.remove(); }, 1000);
-}, 300);
-}, delayCollasso);
-}
-});
-
-  // Logica Mouse Torcia
+// MOUSE FLASHLIGHT EFFECT
+function initMouseFlashlight() {
   document.addEventListener('mousemove', (e) => {
-  document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
-  document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
-});
+    document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
+    document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+  });
+}
 
-  document.addEventListener('DOMContentLoaded', () => {
+// HEADER VISIBILITY
+function updateHeaderVisibility(scrollY, lastScrollTop, header) {
+  if (scrollY > lastScrollTop && scrollY > SCROLL_CONFIG.headerHideThreshold) {
+    header.classList.add('header-hidden');
+  } else {
+    header.classList.remove('header-hidden');
+  }
+  return scrollY <= 0 ? 0 : scrollY;
+}
 
-  // --- MOTORE UNIFICATO: HEADER, COLORI E ANIMAZIONE HERO ---
+// HEADER COLOR LOGIC
+function updateHeaderColor(scrollY, header, contentScroller) {
+  const scrollerTop = contentScroller ? contentScroller.getBoundingClientRect().top : 1000;
+  const isOverBlue = scrollY > SCROLL_CONFIG.blueBackgroundThreshold && scrollerTop > SCROLL_CONFIG.headerOverlapThreshold;
+  header.classList.toggle('over-blue', isOverBlue);
+}
+
+// HERO ANIMATION (IRIS WIPE)
+function updateHeroAnimation(scrollY, heroContentMask, heroWrapper) {
+  if (!heroContentMask || !heroWrapper || scrollY > SCROLL_CONFIG.fadeDistance + 200) return;
+
+  const progress = Math.min(scrollY / SCROLL_CONFIG.fadeDistance, 1);
+  const scale = 1 - (progress * 0.8);
+  const radius = Math.max(0, 150 - (progress * 400));
+
+  heroWrapper.style.transform = `scale(${scale})`;
+  heroContentMask.style.clipPath = `circle(${radius}% at 50% 50%)`;
+  heroContentMask.style.webkitClipPath = `circle(${radius}% at 50% 50%)`;
+}
+
+// UNIFIED SCROLL ENGINE
+function initScrollEngine() {
   let lastScrollTop = 0;
   const header = document.querySelector('header');
   const heroContentMask = document.querySelector('.hero-content-mask');
   const heroWrapper = document.querySelector('.hero-wrapper');
   const contentScroller = document.querySelector('.content-scroller');
-  const fadeDistance = 800;
 
   window.addEventListener('scroll', () => {
-  requestAnimationFrame(() => {
-  let scrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-  // 1. NASCONDI/MOSTRA HEADER
-  if (scrollY > lastScrollTop && scrollY > 100) {
-  header.classList.add('header-hidden');
-} else {
-  header.classList.remove('header-hidden');
-}
-  lastScrollTop = scrollY <= 0 ? 0 : scrollY;
-
-  // 2. COLORE DINAMICO (Bianco sul blu, Nero sul bianco)
-  // Calcola a che distanza si trova il "sipario" bianco superiore
-  let scrollerTop = contentScroller ? contentScroller.getBoundingClientRect().top : 1000;
-
-  // Se siamo scesi oltre i 150px (appare il blu) E il sipario bianco è ancora sotto l'header (> 80px)
-  if (scrollY > 150 && scrollerTop > 80) {
-  header.classList.add('over-blue'); // Testo Bianco
-} else {
-  header.classList.remove('over-blue'); // Torna Nero
+    requestAnimationFrame(() => {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      if(header) {
+        lastScrollTop = updateHeaderVisibility(scrollY, lastScrollTop, header);
+        updateHeaderColor(scrollY, header, contentScroller);
+      }
+      updateHeroAnimation(scrollY, heroContentMask, heroWrapper);
+    });
+  });
 }
 
-  // 3. ANIMAZIONE BUCO NERO (IRIS WIPE)
-  let progress = Math.min(scrollY / fadeDistance, 1);
-  let scale = 1 - (progress * 0.8);
-  let radius = Math.max(0, 150 - (progress * 400));
-
-  if (heroContentMask && heroWrapper && scrollY <= fadeDistance + 200) {
-  heroWrapper.style.transform = `scale(${scale})`;
-  heroContentMask.style.clipPath = `circle(${radius}% at 50% 50%)`;
-  heroContentMask.style.webkitClipPath = `circle(${radius}% at 50% 50%)`;
-}
-});
-});
-  // --- FINE MOTORE UNIFICATO ---
-
-  // Fade In Observer per le card e i titoli
+// INTERSECTION OBSERVER
+function initRevealObserver() {
   const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-  if (entry.isIntersecting) {
-  entry.target.classList.add('revealed');
-  observer.unobserve(entry.target);
-}
-});
-}, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: SCROLL_CONFIG.observerThreshold,
+    rootMargin: SCROLL_CONFIG.observerRootMargin
+  });
 
-  document.querySelectorAll('.why-item, .section-title, .pricing-wrapper, .custom-plan-banner').forEach(item => observer.observe(item));
+  document.querySelectorAll('.why-item, .section-title, .pricing-wrapper, .custom-plan-banner')
+    .forEach(item => observer.observe(item));
+}
+
+// EXPAND/COLLAPSE CARDS
+function initExpandTriggers() {
+  function toggleCardExpansion(item, wrapper, textSpan) {
+    const isExpanded = item.classList.toggle('expanded');
+    textSpan.innerText = isExpanded ? 'Riduci' : 'Leggi tutto';
+    wrapper.style.maxHeight = isExpanded ? wrapper.scrollHeight + "px" : "90px";
+  }
 
   document.querySelectorAll('.expand-trigger').forEach(btn => {
-  btn.addEventListener('click', function() {
-  const item = this.closest('.why-item');
-  const wrapper = item.querySelector('.text-expand-wrapper');
-  const textSpan = this.querySelector('.btn-text');
-
-  item.classList.toggle('expanded');
-
-  if(item.classList.contains('expanded')) {
-  textSpan.innerText = 'Riduci';
-  // Imposta l'altezza esattamente alla misura reale del contenuto
-  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
-} else {
-  textSpan.innerText = 'Leggi tutto';
-  // Riporta la card alla sua altezza di partenza tronca
-  wrapper.style.maxHeight = "90px";
+    btn.addEventListener('click', function() {
+      const item = this.closest('.why-item');
+      const wrapper = item.querySelector('.text-expand-wrapper');
+      const textSpan = this.querySelector('.btn-text');
+      toggleCardExpansion(item, wrapper, textSpan);
+    });
+  });
 }
-});
-});
 
-  // MOBILE MENU
+// MOBILE MENU
+function initMobileMenu() {
   const menuToggle = document.querySelector('.menu-toggle');
   const menuOverlay = document.querySelector('.mobile-menu-overlay');
   const rippleWhiteMenu = document.querySelector('.ripple-white-menu');
   const rippleBlueMenu = document.querySelector('.ripple-blue-menu');
-  const body = document.body;
+
+  if(!menuToggle) return;
 
   function toggleMenu() {
-  menuToggle.classList.toggle('active');
-  rippleWhiteMenu.classList.toggle('active');
-  rippleBlueMenu.classList.toggle('active');
-  menuOverlay.classList.toggle('active');
-  body.style.overflow = menuOverlay.classList.contains('active') ? 'hidden' : 'auto';
-}
+    menuToggle.classList.toggle('active');
+    rippleWhiteMenu.classList.toggle('active');
+    rippleBlueMenu.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    document.body.style.overflow = menuOverlay.classList.contains('active') ? 'hidden' : 'auto';
+  }
 
   menuToggle.addEventListener('click', toggleMenu);
-  document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', toggleMenu));
+  document.querySelectorAll('.mobile-nav-link').forEach(link =>
+    link.addEventListener('click', toggleMenu)
+  );
+}
 
-  //FORMSPREE LINK PER INVIO EMAIL DIRETTO DA FORM
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xykddzpe";
+// UTILITY FORM SUBMIT (Riutilizzabile per entrambi i form)
+function handleFormSubmission(e, formId, container, btnId, successHTML, privacyIds) {
+  if (e.target.id !== formId) return;
+  e.preventDefault();
 
-  // --- MODAL LOGIC 1: SELEZIONE PIANO ---
+  // Controllo Privacy
+  const privacyCheckbox = document.getElementById(privacyIds.checkbox);
+  const privacyCheckmark = document.getElementById(privacyIds.checkmark);
+  const privacyError = document.getElementById(privacyIds.error);
+
+  if (privacyCheckbox && !privacyCheckbox.checked) {
+    privacyCheckmark.classList.add('error-border');
+    privacyError.classList.add('show');
+    return;
+  }
+
+  // Prepara pulsante
+  const btn = document.getElementById(btnId);
+  btn.innerText = "Invio in corso...";
+  btn.style.opacity = "0.7";
+  btn.style.pointerEvents = "none";
+
+  // Invia a Formspree
+  fetch(FORMSPREE_ENDPOINT, {
+    method: 'POST',
+    body: new FormData(e.target),
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      container.innerHTML = successHTML;
+    } else {
+      btn.innerText = "Errore. Riprova.";
+      btn.style.opacity = "1";
+      btn.style.pointerEvents = "auto";
+    }
+  }).catch(error => {
+    btn.innerText = "Errore di rete.";
+    btn.style.opacity = "1";
+    btn.style.pointerEvents = "auto";
+  });
+}
+
+// FUNZIONE PER RIMUOVERE L'ERRORE PRIVACY AL CLICK
+function initPrivacyClearError(checkboxId, checkmarkId, errorId) {
+  const checkbox = document.getElementById(checkboxId);
+  if(checkbox) {
+    checkbox.addEventListener('change', function() {
+      if(this.checked) {
+        document.getElementById(checkmarkId).classList.remove('error-border');
+        document.getElementById(errorId).classList.remove('show');
+      }
+    });
+  }
+}
+
+// MODAL LOGIC: PLAN MODAL (Modello 1)
+function initPlanModal() {
   const planModal = document.getElementById('planModal');
   const closePlanModal = document.getElementById('closePlanModal');
-  const planForm = document.getElementById('planForm');
   const planContainer = document.getElementById('planFormContainer');
-  let originalPlanHTML = planContainer.innerHTML;
+  if(!planModal || !planContainer) return;
+
+  const originalPlanHTML = planContainer.innerHTML;
+
+  function hidePlanModal() {
+    planModal.classList.remove('active');
+    setTimeout(() => planContainer.innerHTML = originalPlanHTML, 300);
+  }
+
+  const successHTML = `
+    <div style='text-align:center; padding: 30px 0;'>
+      <svg width='60' height='60' style='color:var(--accent-color); margin-bottom:20px;' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg>
+      <h3 style='color:var(--text-color); font-family:var(--font-tech); font-size:1.5rem; margin-bottom:10px;'>Richiesta Inviata!</h3>
+      <p style='color:var(--secondary-text); font-size:1rem;'>Abbiamo ricevuto i tuoi dati. Ti contatteremo a brevissimo.</p>
+    </div>`;
 
   document.querySelectorAll('.btn-modal-trigger').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-  e.preventDefault();
-  const plan = btn.getAttribute('data-plan');
-  document.getElementById('selectedPlanInput').value = plan;
-  planModal.classList.add('active');
-});
-});
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
 
-  function hidePlanModal() { planModal.classList.remove('active'); setTimeout(() => planContainer.innerHTML = originalPlanHTML, 300); }
+      // Fallback intelligente per il piano (uguale a progetti.js)
+      let plan = btn.getAttribute('data-plan');
+      if (!plan) {
+        const card = btn.closest('.pricing-card');
+        if (card) {
+          const titleEl = card.querySelector('h3');
+          if (titleEl) plan = titleEl.innerText;
+        }
+      }
+
+      const input = document.getElementById('selectedPlanInput');
+      if(input && plan) {
+        input.value = plan;
+        input.setAttribute('value', plan);
+      }
+
+      planModal.classList.add('active');
+    });
+  });
+
   closePlanModal.addEventListener('click', hidePlanModal);
-  planModal.addEventListener('click', (e) => { if(e.target === planModal) hidePlanModal(); });
+  planModal.addEventListener('click', (e) => { if (e.target === planModal) hidePlanModal(); });
 
-  planContainer.addEventListener('submit', (e) => {
-  if(e.target.id === 'planForm') {
-  e.preventDefault();
-  const btn = document.getElementById('generatePlanBtn');
-  btn.innerText = "Invio in corso..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none";
+  planContainer.addEventListener('submit', (e) => handleFormSubmission(
+    e, 'planForm', planContainer, 'generatePlanBtn', successHTML,
+    { checkbox: 'privacyConsentPlan', checkmark: 'privacyCheckmarkPlan', error: 'privacyErrorPlan' }
+  ));
 
-  fetch(FORMSPREE_ENDPOINT, {
-  method: 'POST',
-  body: new FormData(e.target),
-  headers: { 'Accept': 'application/json' }
-}).then(response => {
-  if (response.ok) {
-  planContainer.innerHTML = "<div style='text-align:center; padding: 30px 0;'><svg width='60' height='60' style='color:var(--accent-color); margin-bottom:20px;' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg><h3 style='color:var(--text-color); font-family:var(--font-tech); font-size:1.5rem; margin-bottom:10px;'>Richiesta Inviata!</h3><p style='color:var(--secondary-text); font-size:1rem;'>Abbiamo ricevuto i tuoi dati. Ti contatteremo a brevissimo.</p></div>";
-} else {
-  btn.innerText = "Errore. Riprova."; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
+  initPrivacyClearError('privacyConsentPlan', 'privacyCheckmarkPlan', 'privacyErrorPlan');
 }
-}).catch(error => {
-  btn.innerText = "Errore di rete."; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
-});
-}
-});
 
-  // --- MODAL LOGIC 2: ANALISI PERSONALIZZATA ---
+// MODAL LOGIC: CUSTOM MODAL (Analisi Personalizzata)
+function initCustomModal() {
   const customModal = document.getElementById('customPlanModal');
-  const openCustomBtn = document.getElementById('openCustomModalBtn');
   const closeCustomBtn = document.getElementById('closeCustomModal');
   const customContainer = document.getElementById('customFormContainer');
-  let originalCustomHTML = customContainer.innerHTML;
+  if(!customModal || !customContainer) return;
 
-  if(openCustomBtn) {
-  openCustomBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  customModal.classList.add('active');
-});
-}
+  const originalCustomHTML = customContainer.innerHTML;
 
-  function hideCustomModal() { customModal.classList.remove('active'); setTimeout(() => customContainer.innerHTML = originalCustomHTML, 300); }
+  // ECCO LA MAGIA: Cerca sia l'ID del banner sia i link con la classe nel footer
+  document.querySelectorAll('#openCustomModalBtn, .open-custom-modal').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      customModal.classList.add('active');
+    });
+  });
+
+  function hideCustomModal() {
+    customModal.classList.remove('active');
+    setTimeout(() => customContainer.innerHTML = originalCustomHTML, 300);
+  }
+
   closeCustomBtn.addEventListener('click', hideCustomModal);
   customModal.addEventListener('click', (e) => { if(e.target === customModal) hideCustomModal(); });
 
-  customContainer.addEventListener('submit', (e) => {
-  if(e.target.id === 'customForm') {
-  e.preventDefault();
-  const btn = document.getElementById('sendCustomEmailBtn');
-  btn.innerText = "Invio in corso..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none";
+  const successHTML = `
+    <div style='text-align:center; padding: 30px 0;'>
+      <svg width='60' height='60' style='color:var(--accent-color); margin-bottom:20px;' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg>
+      <h3 style='color:var(--text-color); font-family:var(--font-tech); font-size:1.5rem; margin-bottom:10px;'>Messaggio Inviato!</h3>
+      <p style='color:var(--secondary-text); font-size:1rem;'>Analizzeremo la tua situazione e ti scriveremo presto.</p>
+    </div>`;
 
-  fetch(FORMSPREE_ENDPOINT, {
-  method: 'POST',
-  body: new FormData(e.target),
-  headers: { 'Accept': 'application/json' }
-}).then(response => {
-  if (response.ok) {
-  customContainer.innerHTML = "<div style='text-align:center; padding: 30px 0;'><svg width='60' height='60' style='color:var(--accent-color); margin-bottom:20px;' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'></path><polyline points='22 4 12 14.01 9 11.01'></polyline></svg><h3 style='color:var(--text-color); font-family:var(--font-tech); font-size:1.5rem; margin-bottom:10px;'>Messaggio Inviato!</h3><p style='color:var(--secondary-text); font-size:1rem;'>Analizzeremo la tua situazione e ti scriveremo presto.</p></div>";
-} else {
-  btn.innerText = "Errore. Riprova."; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
+  customContainer.addEventListener('submit', (e) => handleFormSubmission(
+    e, 'customForm', customContainer, 'sendCustomEmailBtn', successHTML,
+    { checkbox: 'privacyConsentCustom', checkmark: 'privacyCheckmarkCustom', error: 'privacyErrorCustom' }
+  ));
+
+  initPrivacyClearError('privacyConsentCustom', 'privacyCheckmarkCustom', 'privacyErrorCustom');
 }
-}).catch(error => {
-  btn.innerText = "Errore di rete."; btn.style.opacity = "1"; btn.style.pointerEvents = "auto";
+
+// INITIALIZATION
+document.addEventListener('DOMContentLoaded', () => {
+  initPreloader();
+  initScrollEngine();
+  initRevealObserver();
+  initExpandTriggers();
+  initMobileMenu();
+  initPlanModal();
+  initCustomModal();
 });
-}
-});
-});
+
+initMouseFlashlight();
