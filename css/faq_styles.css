@@ -162,6 +162,7 @@ body.start-animations .nav-links { animation: fadeDownCenter 0.8s ease-out 0.2s 
   margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Aggiunto: Centra eventuali sottomenù o righe spezzate */
 
   transform: scaleY(1.15);
   transform-origin: left bottom;
@@ -221,16 +222,17 @@ body.start-animations .nav-links { animation: fadeDownCenter 0.8s ease-out 0.2s 
   position: relative; z-index: 10;
 }
 
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--secondary-text);
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0; /* Rimuove il "margin: 0 auto" che lo forzava al centro */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto; /* RE-INSERITO margin: 0 auto per centrare il blocco testo */
+    text-align: center; /* Centra il testo all'interno del blocco */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
 .hero-subtitle.revealed { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
 
 /* --- ACCORDION FAQ (EFFETTO GLASSMORPHISM) --- */
@@ -331,7 +333,7 @@ body.start-animations .nav-links { animation: fadeDownCenter 0.8s ease-out 0.2s 
 
 /* --- FOOTER (Stesso dell'index) --- */
 footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-color: #ffffff; position: relative; z-index: 10; font-size: 0.95rem; color: var(--secondary-text); }
-.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
+  .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; }
 .footer-col h4 { color: var(--text-color); font-size: 1.1rem; margin-bottom: 20px; font-weight: 700; }
 .footer-col .logo { color: var(--text-color); }
 .footer-col ul li { margin-bottom: 12px; }
@@ -342,8 +344,15 @@ footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-
 .social-link svg { fill: currentColor; width: 24px; height: 24px; }
 
 @media (max-width: 1024px) {
-  .section-title { font-size: 3rem; text-align: left; }
-  .nav-links, .desktop-spacer { display: none; }
+  .section-title {
+    font-size: 3rem;
+    text-align: center; /* CAMBIATO da left a center */
+    align-items: center; /* Assicura che anche gli elementi flex siano centrati */
+  }
+
+  .hero-subtitle {
+    text-align: center;
+  }  .nav-links, .desktop-spacer { display: none; }
   .menu-toggle { display: flex; }
   .footer-grid { grid-template-columns: 1fr; gap: 40px; }
   .faq-question { font-size: 1.1rem; }

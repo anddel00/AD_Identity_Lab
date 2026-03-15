@@ -197,15 +197,27 @@ header.over-blue .nav-item.active-nav a { color: var(--text-color) !important; }
   align-items: center;
   padding-top: 180px;
   will-change: clip-path;
+  justify-content: center;
 }
 
-.hero-wrapper {
-  display: flex; justify-content: flex-start; align-items: center; width: 100%;
-  will-change: transform, opacity;
-  transform-origin: center center;
-}
 
-.hero-text-block { width: 100%; }
+  .hero-wrapper {
+    display: flex;
+    flex-direction: column; /* Aggiunto: in colonna */
+    justify-content: center; /* Cambiato */
+    align-items: center; /* Cambiato */
+    width: 100%;
+    text-align: center; /* Aggiunto: per centrare i testi interni */
+    will-change: transform, opacity;
+    transform-origin: center center;
+  }
+
+  .hero-text-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra il contenuto del blocco di testo */
+  }
 
 h1 {
   font-family: var(--font-hero);
@@ -237,7 +249,7 @@ h1 {
   opacity: 0;
 }
 
-p.hero-subtitle { font-family: var(--font-main); font-size: 1.25rem; color: var(--secondary-text); max-width: 600px; font-weight: 500; border-left: 3px solid var(--accent-color); padding-left: 25px; opacity: 0; margin-bottom: 2rem; }
+p.hero-subtitle { font-family: var(--font-main); font-size: 1.25rem; color: var(--secondary-text);  font-weight: 500; opacity: 0; margin-bottom: 2rem; }
 
 /* IL SIPARIO */
 .content-scroller {
@@ -587,7 +599,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 
 /* --- FOOTER & MODAL --- */
 footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-color: var(--surface-color); position: relative; z-index: 10; font-size: 0.95rem; color: var(--secondary-text); }
-.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; }
 .footer-col h4 { color: var(--text-color); font-size: 1.1rem; margin-bottom: 20px; font-weight: 700; }
 .footer-col .logo { color: var(--text-color); }
 .footer-col ul li { margin-bottom: 12px; }
@@ -619,7 +631,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   h1 { font-size: 12vw; margin-bottom: 1.5rem; }
   .hero { height: 100vh;}
   .container { padding: 0 20px;}
-  p.hero-subtitle { font-family: var(--font-main); font-size: 1.1rem; border-left: 2px solid var(--accent-color); padding-left: 15px; }
+  p.hero-subtitle { font-family: var(--font-logo); font-size: 1.1rem;}
   .hero-content-mask { padding-top: 140px; padding-bottom: 60px; }
   .hero-wrapper { flex-direction: column; align-items: flex-start; justify-content: flex-start; padding-top: 0; }
   .hero-text-block { width: 100%; margin-bottom: 40px; }

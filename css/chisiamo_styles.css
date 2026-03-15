@@ -188,31 +188,48 @@ body.start-animations .delay-2 { animation-delay: 1.4s; }
 .revealed-element.revealed { opacity: 1; transform: translateY(0); }
 
 /* --- STILI SPECIFICI PAGINA CHI SIAMO --- */
-.content-scroller { position: relative; z-index: 20; background-color: var(--bg-color); padding-top: 150px; min-height: 100vh; }
+  .content-scroller { position: relative; z-index: 20; background-color: var(--bg-color); padding-top: 150px; min-height: 100vh; }
 
-.manifesto-hero { padding: 40px 0 60px 0; }
+  .manifesto-hero {
+    padding: 40px 0 60px 0;
+    display: flex;             /* Aggiunto */
+    flex-direction: column;    /* Aggiunto */
+    align-items: center;       /* Aggiunto */
+  }
 
-.manifesto-title {
-  font-family: var(--font-hero);
-  font-size: clamp(4rem, 9vw, 12rem);
-  line-height: 0.95;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  transform: scaleY(1.15);
-  transform-origin: left bottom;
-}
+  /* Centriamo anche il container interno */
+  .manifesto-hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* Forza i testi figli a centrarsi */
+  }
 
-.manifesto-body {
-  max-width: 900px;
-  font-size: clamp(1.2rem, 2vw, 1.6rem);
-  line-height: 1.6;
-  color: var(--secondary-text);
-  font-weight: 400;
-  margin-bottom: 80px;
-}
+  .manifesto-title {
+    font-family: var(--font-hero);
+    font-size: clamp(4rem, 9vw, 12rem);
+    line-height: 0.95;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Aggiunto: per centrare eventuali righe spezzate o sottomenù */
+
+    transform: scaleY(1.15);
+    transform-origin: center bottom; /* CAMBIATO DA left bottom A center bottom */
+  }
+
+  .manifesto-body {
+    max-width: 900px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--font-logo);
+    font-weight: 500;
+    margin: 0 auto 80px auto; /* CAMBIATO: da margin-bottom a margin: 0 auto 80px auto */
+    text-align: center;       /* Aggiunto: per centrare il paragrafo */
+  }
 .manifesto-body strong { color: var(--text-color); font-weight: 600; }
 
 /* --- PREMIUM SEPARATOR --- */
@@ -352,7 +369,7 @@ div:nth-child(3):hover .founder-offset-card { transform: translateY(4px) transla
 }
 /* --- FOOTER --- */
 footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-color: #ffffff; position: relative; z-index: 10; font-size: 0.95rem; color: var(--secondary-text); }
-.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; }
 .footer-col h4 { color: var(--text-color); font-size: 1.1rem; margin-bottom: 20px; font-weight: 700; }
 .footer-col .logo { color: var(--text-color); }
 .footer-col ul li { margin-bottom: 12px; }
@@ -365,7 +382,7 @@ footer { padding: 80px 0; border-top: 1px solid var(--border-color); background-
 @media (max-width: 1024px) {
   .container { padding: 0 20px;}
   .content-scroller { padding-top: 120px; }
-  .manifesto-title { font-size: 3.2rem; }
+  .manifesto-title { font-size: 3.2rem; text-align: center; }
   .manifesto-body { font-size: 1.15rem; margin-bottom: 40px; }
   .founders-grid { grid-template-columns: 1fr; }
   .founder-card { padding: 35px; }
