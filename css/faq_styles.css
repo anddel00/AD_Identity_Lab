@@ -145,6 +145,8 @@ header.over-blue .menu-toggle span { background-color: #FFFFFF; transition: back
 .mobile-menu-overlay.active .mobile-nav-item:nth-child(2) .mobile-nav-link { transition-delay: 0.5s; transform: translateY(0); opacity: 1; }
 .mobile-menu-overlay.active .mobile-nav-item:nth-child(3) .mobile-nav-link { transition-delay: 0.6s; transform: translateY(0); opacity: 1; }
 .mobile-menu-overlay.active .mobile-nav-item:nth-child(4) .mobile-nav-link { transition-delay: 0.7s; transform: translateY(0); opacity: 1; }
+  .mobile-menu-overlay.active .mobile-nav-item:nth-child(5) .mobile-nav-link { transition-delay: 0.7s; transform: translateY(0); opacity: 1; }
+
 
 /* --- ANIMAZIONI DI PARTENZA --- */
 body.start-animations .logo { animation: dropStraight 0.8s ease-out forwards; }
