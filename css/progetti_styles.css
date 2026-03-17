@@ -216,7 +216,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 /* 3. Immagine Statica Mockup */
 .static-mockup-wrapper { width: 100%; display: flex; justify-content: center;}
 .static-mockup-img {
-  width: 100%; max-width: 1000px; height: auto; object-fit: contain; transform: scale(1.15); /* Zoom elegante del 15% */
+  width: 100%; max-width: 1000px; height: auto; object-fit: contain;
   /* Nessuna ombra CSS: le tue immagini da Figma hanno già un'ombra bellissima! */
 }
 
