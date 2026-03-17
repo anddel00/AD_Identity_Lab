@@ -347,4 +347,5 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   .gallery-pagination { gap: 10px; }
 
   .customization-notice { flex-direction: column; align-items: flex-start; padding: 30px; gap: 20px; margin-bottom: 60px; }
+  .btn-demo-link {margin-top: 20px;}
 }
