@@ -149,6 +149,28 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 .tier-gallery-master { width: 100%; max-width: 1200px; display: flex; flex-direction: column; }
 .tier-gallery-wrapper { position: relative; width: 100%; overflow: hidden; }
 
+/* ========================================================== */
+/* --- FIX DEFINITIVO: SCORRIMENTO LINEARE SBLOCCATO --- */
+/* ========================================================== */
+
+.horizontal-templates-gallery {
+  overflow-y: hidden !important; /* Taglia via lo scorrimento verticale interno... */
+  overscroll-behavior-y: auto !important; /* ...ma LASCIA PASSARE lo scroll alla pagina intera! */
+  touch-action: pan-y; /* Fa capire subito a smartphone e trackpad che qui si scorre la pagina in giù */
+}
+
+.static-mockup-img {
+  pointer-events: auto !important; /* Sblocchiamo il mouse sull'immagine */
+  user-select: none; /* Evita che si selezioni di blu per sbaglio */
+  -webkit-user-drag: none; /* Evita che l'utente si trascini via l'immagine per sbaglio */
+}
+/* 3. Assicura che i bottoni rimangano cliccabili nonostante il pointer-events: none sopra */
+.slide-actions {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
 .horizontal-templates-gallery {
   display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
   width: 100%; -ms-overflow-style: none; scrollbar-width: none;
@@ -158,7 +180,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 /* La singola slide (Che contiene Nome, Feature, Immagine e Bottoni in colonna) */
 .template-slide {
   flex: 0 0 100%; width: 100%; scroll-snap-align: center; display: flex; flex-direction: column; align-items: center;
-  padding: 0 15px; box-sizing: border-box;
+  padding: 0; box-sizing: border-box;
 }
 
 /* 1. Nome Template */
@@ -194,7 +216,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 /* 3. Immagine Statica Mockup */
 .static-mockup-wrapper { width: 100%; display: flex; justify-content: center;}
 .static-mockup-img {
-  width: 100%; max-width: 1000px; height: auto; object-fit: contain;
+  width: 100%; max-width: 1000px; height: auto; object-fit: contain; transform: scale(1.15); /* Zoom elegante del 15% */
   /* Nessuna ombra CSS: le tue immagini da Figma hanno già un'ombra bellissima! */
 }
 
@@ -221,7 +243,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 10px 20px 40px 20px; /* Dà respiro rispetto al fondo del vetro */
+  padding: 0 15px 30px 15px; /* Togliamo padding inutile ai lati */
   position: relative;
   z-index: 30;
   margin-top: 40px;
