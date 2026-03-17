@@ -232,7 +232,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 
 .btn-visit {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 16px 45px; border-radius: 50px; background-color: var(--accent-color); border: 2px solid var(--accent-color);
+  padding: 16px 20px; border-radius: 50px; background-color: var(--accent-color); border: 2px solid var(--accent-color);
   color: #fff; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.95rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; box-shadow: 0 4px 15px rgba(37,99,235,0.15);
 }
