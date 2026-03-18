@@ -152,7 +152,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 
 /* Galleria Slider orizzontale per i Template (Tutto centrato) */
 .tier-gallery-master { width: 100%; max-width: 1200px; display: flex; flex-direction: column; }
-.tier-gallery-wrapper { position: relative; width: 100%; overflow: hidden; border: 1px solid; border-radius: 20px; border-color: var(--accent-color); padding: 20px;}
+.tier-gallery-wrapper { position: relative; width: 100%; overflow: hidden; border: 1px solid; border-radius: 20px; border-color: var(--accent-color);}
 
 /* ========================================================== */
 /* --- FIX DEFINITIVO: SCORRIMENTO LINEARE SBLOCCATO --- */
@@ -397,8 +397,4 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   .gallery-pagination { gap: 10px; }
 
   .customization-notice { flex-direction: column; align-items: flex-start; padding: 30px; gap: 20px; margin-bottom: 60px; }
-
-  .btn-demo-link{
-    font-size: 0.85rem;
-  }
 }
