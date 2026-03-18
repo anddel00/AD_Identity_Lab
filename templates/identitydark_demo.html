@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marco Rossi | Cloud Architect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #18181b;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --accent: #10b981; /* Verde smeraldo tech */
+      --border: #27272a;
+      --font-main: 'Space Grotesk', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+    /* LAYOUT: SIDEBAR FISSA + CONTENT */
+    .sidebar { flex: 0 0 38%; height: 100vh; position: sticky; top: 0; background: var(--bg); border-right: 1px solid var(--border); padding: 4rem; display: flex; flex-direction: column; justify-content: space-between; z-index: 10; }
+    .content { flex: 1; padding: 5rem 6rem; background: radial-gradient(circle at top right, #10b9810a, transparent 50%); }
+
+    /* SIDEBAR ELEMENTI */
+    .profile-wrap { position: relative; display: inline-block; margin-bottom: 2rem; }
+    .profile-img { width: 120px; height: 120px; border-radius: 0; object-fit: cover; filter: grayscale(100%); transition: filter 0.5s; }
+    .profile-wrap:hover .profile-img { filter: grayscale(0%); }
+    .profile-wrap::after { content: ''; position: absolute; bottom: -10px; right: -10px; width: 100%; height: 100%; border: 2px solid var(--accent); z-index: -1; transition: transform 0.3s; }
+    .profile-wrap:hover::after { transform: translate(5px, 5px); }
+
+    h1 { font-size: 3.5rem; line-height: 1; letter-spacing: -2px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    h2 { font-family: var(--font-code); font-size: 1rem; color: var(--accent); margin-bottom: 2rem; font-weight: 400; }
+
+    /* CONTATTI CON ICONE */
+    .contact-list { list-style: none; margin-bottom: auto; }
+    .contact-list li { margin-bottom: 1.2rem; font-family: var(--font-code); font-size: 0.9rem; color: var(--muted); display: flex; align-items: center; gap: 12px; }
+    .contact-list svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+
+    /* BOTTONE INTERATTIVO HR */
+    .btn-req {
+      display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 2rem;
+      background: transparent; border: 1px solid var(--accent); color: var(--accent);
+      font-family: var(--font-code); text-transform: uppercase; font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; position: relative; overflow: hidden; transition: color 0.3s; margin-top: 2rem; text-decoration: none;
+    }
+    .btn-req::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--accent); transition: left 0.4s cubic-bezier(0.8, 0, 0.2, 1); z-index: -1; }
+    .btn-req:hover { color: var(--bg); }
+    .btn-req:hover::before { left: 0; }
+
+    /* CONTENT SECTIONS */
+    section { margin-bottom: 6rem; opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    section.in-view { opacity: 1; transform: translateY(0); }
+
+    .sec-title { font-size: 2rem; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1rem; }
+    .sec-title::after { content: ''; height: 1px; background: var(--border); flex: 1; }
+
+    .bio { font-size: 1.2rem; color: var(--muted); line-height: 1.7; }
+    .bio strong { color: var(--text); font-weight: 700; }
+
+    /* TIMELINE RIGOROSA */
+    .timeline { border-left: 2px solid var(--border); }
+    .card { position: relative; padding: 2rem; margin-left: 2rem; margin-bottom: 2rem; background: var(--surface); border: 1px solid var(--border); transition: all 0.3s; }
+    .card::before { content: ''; position: absolute; left: -2.7rem; top: 2.5rem; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; transition: background 0.3s; }
+    .card::after { content: ''; position: absolute; left: -2rem; top: 2.8rem; width: 2rem; height: 2px; background: var(--border); transition: background 0.3s; }
+    .card:hover { border-color: var(--accent); transform: translateX(10px); }
+    .card:hover::before { background: var(--accent); }
+    .card:hover::after { background: var(--accent); }
+
+    .card-date { font-family: var(--font-code); font-size: 0.85rem; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+    .card-title { font-size: 1.4rem; margin-bottom: 0.2rem; }
+    .card-org { font-size: 1rem; color: var(--muted); margin-bottom: 1rem; }
+    .card-desc { font-size: 1rem; color: var(--muted); line-height: 1.6; }
+
+    /* SKILLS CODE STYLE */
+    .skills { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .skill-badge { font-family: var(--font-code); font-size: 0.85rem; padding: 0.8rem 1.2rem; background: #18181b; border: 1px solid #27272a; color: #f4f4f5; transition: all 0.3s; }
+    .skill-badge:hover { border-color: var(--accent); color: var(--accent); background: rgba(16, 185, 129, 0.05); }
+
+    /* FORM HR */
+    .form-wrapper { background: var(--surface); padding: 3rem; border: 1px solid var(--border); position: relative; }
+    .form-wrapper::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); }
+    input, textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 1rem; font-family: var(--font-main); margin-bottom: 1.5rem; outline: none; transition: border 0.3s; }
+    input:focus, textarea:focus { border-color: var(--accent); }
+
+    @media (max-width: 1024px) {
+      body { flex-direction: column; }
+      .sidebar { height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 3rem 2rem; }
+      .content { padding: 3rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div>
+    <div class="profile-wrap">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=300&q=80" alt="Marco Rossi" class="profile-img">
+    </div>
+    <h1>Marco<br>Rossi</h1>
+    <h2>Cloud Solutions Architect</h2>
+
+    <ul class="contact-list">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Milano, Italia
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        m.rossi@example.com
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        linkedin.com/in/marcorossi
+      </li>
+    </ul>
+  </div>
+  <a href="#form-contatto" class="btn-req">Richiedi CV Completo</a>
+</aside>
+
+<main class="content">
+  <section class="reveal">
+    <h3 class="sec-title">Executive Summary</h3>
+    <p class="bio">Progetto e ottimizzo infrastrutture cloud scalabili. Aiuto le aziende a transitare verso <strong>architetture serverless</strong> abbattendo i costi operativi e garantendo standard di <strong>sicurezza enterprise</strong>. 5+ anni di esperienza in ambienti DevOps ad alta pressione.</p>
+  </section>
+
+  <section class="reveal">
+    <h3 class="sec-title">Esperienza</h3>
+    <div class="timeline">
+      <div class="card">
+        <span class="card-date">2022 - Presente</span>
+        <h4 class="card-title">Senior Cloud Engineer</h4>
+        <div class="card-org">TechNova SpA, Milano</div>
+        <p class="card-desc">Migrazione di sistemi legacy su AWS. Implementazione di pipeline CI/CD automatizzate riducendo i tempi di deploy del 40%. Gestione di un team di 3 junior dev.</p>
+      </div>
+      <div class="card">
+        <span class="card-date">2019 - 2022</span>
+        <h4 class="card-title">Backend Developer</h4>
+        <div class="card-org">Fintech Solutions Srl, Torino</div>
+        <p class="card-desc">Sviluppo di microservizi in Node.js per l'elaborazione di transazioni in tempo reale. Ottimizzazione query database SQL e architetture cloud base.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h3 class="sec-title">Formazione</h3>
+    <div class="timeline">
+      <div class="card">
+        <span class="card-date">2016 - 2019</span>
+        <h4 class="card-title">Laurea Magistrale in Computer Science</h4>
+        <div class="card-org">Politecnico di Milano</div>
+        <p class="card-desc">Specializzazione in Cloud Computing e Sistemi Distribuiti. Tesi sull'ottimizzazione dei container Docker in ambienti edge. Votazione: 110/110 con lode.</p>
+      </div>
+      <div class="card">
+        <span class="card-date">2021</span>
+        <h4 class="card-title">AWS Certified Solutions Architect</h4>
+        <div class="card-org">Amazon Web Services</div>
+        <p class="card-desc">Certificazione di livello professionale per la progettazione di sistemi distribuiti, scalabili e sicuri sull'ecosistema AWS.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h3 class="sec-title">Hard Skills</h3>
+    <div class="skills">
+      <div class="skill-badge">AWS / Azure</div>
+      <div class="skill-badge">Docker & Kubernetes</div>
+      <div class="skill-badge">Node.js / Python</div>
+      <div class="skill-badge">Terraform (IaC)</div>
+      <div class="skill-badge">PostgreSQL / MongoDB</div>
+    </div>
+  </section>
+
+  <section class="reveal" id="form-contatto">
+    <h3 class="sec-title">Contatti Riservati HR</h3>
+    <div class="form-wrapper">
+      <form>
+        <input type="text" placeholder="Nome HR / Agenzia" required>
+        <input type="email" placeholder="Email aziendale" required>
+        <textarea rows="4" placeholder="Dettagli opportunità lavorativa o link annuncio..." required></textarea>
+        <button type="submit" class="btn-req" style="width: 100%; margin-top: 0;">Invia Messaggio</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+  const sections = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.1 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

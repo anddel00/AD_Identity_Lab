@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giulia Bianchi | Marketing Director</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6; /* Blu elegante */
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+    /* LAYOUT: FLOATING SIDEBAR + CONTENT */
+    .sidebar-container { flex: 0 0 35%; padding: 4rem 3rem; position: relative; }
+    .floating-card { position: sticky; top: 4rem; background: var(--surface); border-radius: 24px; padding: 3rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(0,0,0,0.02); }
+
+    .content { flex: 1; padding: 4rem 5rem 4rem 2rem; }
+
+    /* SIDEBAR ELEMENTI */
+    .profile-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15); }
+    h1 { font-family: var(--font-heading); font-size: 2.8rem; line-height: 1.1; margin-bottom: 0.5rem; color: #0f172a; }
+    h2 { font-size: 1rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2rem; }
+
+    /* CONTATTI CON ICONE */
+    .contact-list { list-style: none; padding: 0; margin-bottom: 2.5rem; text-align: left; width: 100%; }
+    .contact-list li { display: flex; align-items: center; gap: 12px; color: var(--muted); margin-bottom: 12px; font-size: 0.95rem; }
+    .contact-list svg { width: 18px; height: 18px; stroke: var(--accent); flex-shrink: 0; }
+
+    /* BOTTONE ELEGANTE HR */
+    .btn-req {
+      display: inline-block; padding: 1rem 2.5rem; background: var(--text); color: var(--surface);
+      border-radius: 50px; font-weight: 500; text-decoration: none; transition: all 0.4s ease;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1); width: 100%;
+    }
+    .btn-req:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(59, 130, 246, 0.25); }
+
+    /* CONTENT SECTIONS */
+    section { margin-bottom: 7rem; opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
+    section.fade-in { opacity: 1; transform: translateY(0); }
+
+    .sec-title { font-family: var(--font-heading); font-size: 2.5rem; color: var(--text); margin-bottom: 3rem; font-style: italic; }
+
+    .bio { font-size: 1.2rem; color: #475569; line-height: 1.8; font-weight: 300; }
+    .bio strong { color: var(--text); font-weight: 500; }
+
+    /* LAYOUT A ZIG-ZAG (Alternato) */
+    .zigzag-container { display: flex; flex-direction: column; gap: 3rem; }
+    .exp-card { background: var(--surface); padding: 2.5rem; border-radius: 20px; width: 85%; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); transition: transform 0.4s; }
+    .exp-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+
+    /* Magia del layout alternato */
+    .exp-card:nth-child(odd) { align-self: flex-start; }
+    .exp-card:nth-child(even) { align-self: flex-end; }
+
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .card-title { font-size: 1.3rem; font-weight: 600; color: var(--text); }
+    .card-date { background: #eff6ff; color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+    .card-org { font-size: 1rem; color: var(--muted); margin-bottom: 1rem; font-weight: 500;}
+    .card-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; }
+
+    /* SKILLS PILLS */
+    .skills-wrapper { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .skill-pill { padding: 0.8rem 1.5rem; background: var(--surface); border-radius: 50px; font-size: 0.95rem; color: var(--text); box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); transition: all 0.3s; }
+    .skill-pill:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
+
+    /* FORM HR MINIMALE */
+    .hr-form { background: var(--surface); padding: 3rem; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.04); }
+    .input-line { width: 100%; border: none; border-bottom: 1px solid #cbd5e1; background: transparent; padding: 1rem 0; font-family: var(--font-body); font-size: 1rem; color: var(--text); outline: none; margin-bottom: 2rem; transition: border-color 0.3s; }
+    .input-line:focus { border-color: var(--accent); }
+    .btn-submit { background: var(--text); color: #fff; border: none; padding: 1.2rem 3rem; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-weight: 500; font-family: var(--font-body); font-size: 1rem; }
+    .btn-submit:hover { background: var(--accent); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
+
+    @media (max-width: 1024px) {
+      body { flex-direction: column; }
+      .sidebar-container { padding: 2rem; }
+      .floating-card { position: relative; top: 0; box-shadow: none; border: none; background: transparent; padding: 1rem; }
+      .content { padding: 2rem; }
+      .exp-card { width: 100%; align-self: center !important; } /* Toglie lo zig-zag su mobile per leggibilità */
+      .card-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .contact-list { justify-content: center; text-align: center; }
+      .contact-list li { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar-container">
+  <div class="floating-card">
+    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?fit=crop&w=300&q=80" alt="Giulia Bianchi" class="profile-img">
+    <h1>Giulia<br>Bianchi</h1>
+    <h2>Digital Marketing Director</h2>
+
+    <ul class="contact-list">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Roma, Italia
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        g.bianchi@esempio.com
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        linkedin.com/in/giuliabianchi
+      </li>
+    </ul>
+
+    <a href="#contatti" class="btn-req">Richiedi CV Completo</a>
+  </div>
+</aside>
+
+<main class="content">
+  <section class="animate">
+    <h3 class="sec-title">Chi Sono.</h3>
+    <p class="bio">Costruisco e guido strategie di marketing orientate ai dati per brand del settore lusso e lifestyle. Con un approccio che fonde <strong>creatività visiva e performance marketing</strong>, aiuto le aziende a posizionarsi sul mercato incrementando la brand equity e il ROI.</p>
+  </section>
+
+  <section class="animate">
+    <h3 class="sec-title">Esperienza.</h3>
+    <div class="zigzag-container">
+
+      <div class="exp-card">
+        <div class="card-header">
+          <h4 class="card-title">Head of Digital Marketing</h4>
+          <span class="card-date">2021 - Presente</span>
+        </div>
+        <div class="card-org">LuxuryBrand Italia, Milano</div>
+        <p class="card-desc">Gestione di un budget ADV di 2M+ annui. Ristrutturazione completa del funnel e-commerce che ha portato a un +45% di fatturato y/y. Coordinamento di un team cross-funzionale di 8 persone.</p>
+      </div>
+
+      <div class="exp-card">
+        <div class="card-header">
+          <h4 class="card-title">Performance Specialist</h4>
+          <span class="card-date">2018 - 2021</span>
+        </div>
+        <div class="card-org">Global Agency Media, Roma</div>
+        <p class="card-desc">Pianificazione e ottimizzazione di campagne Google Ads e Meta Ads per clienti tier-1. Sviluppo di reportistica avanzata per i C-level.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="animate">
+    <h3 class="sec-title">Formazione.</h3>
+    <div class="zigzag-container">
+
+      <div class="exp-card">
+        <div class="card-header">
+          <h4 class="card-title">Master Executive in Digital Marketing</h4>
+          <span class="card-date">2017 - 2018</span>
+        </div>
+        <div class="card-org">SDA Bocconi, Milano</div>
+        <p class="card-desc">Master di specializzazione focalizzato su performance marketing, data analytics avanzato e sviluppo di strategie omnicanale per brand internazionali.</p>
+      </div>
+
+      <div class="exp-card">
+        <div class="card-header">
+          <h4 class="card-title">Laurea in Economia e Management</h4>
+          <span class="card-date">2014 - 2017</span>
+        </div>
+        <div class="card-org">Università LUISS, Roma</div>
+        <p class="card-desc">Indirizzo Marketing e Comunicazione. Analisi di mercato, posizionamento strategico e studi sul comportamento del consumatore online.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="animate">
+    <h3 class="sec-title">Competenze.</h3>
+    <div class="skills-wrapper">
+      <div class="skill-pill">Brand Strategy</div>
+      <div class="skill-pill">Performance Marketing</div>
+      <div class="skill-pill">Data Analytics (GA4)</div>
+      <div class="skill-pill">Team Leadership</div>
+      <div class="skill-pill">Budget Management</div>
+      <div class="skill-pill">E-commerce Growth</div>
+    </div>
+  </section>
+
+  <section class="animate" id="contatti">
+    <h3 class="sec-title">Avviamo una conversazione.</h3>
+    <div class="hr-form">
+      <form>
+        <input type="text" class="input-line" placeholder="Il tuo Nome o Agenzia HR" required>
+        <input type="email" class="input-line" placeholder="Email aziendale" required>
+        <textarea class="input-line" rows="3" placeholder="Parlami della posizione aperta..." required></textarea>
+        <button type="submit" class="btn-submit">Invia Richiesta</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+  const sections = document.querySelectorAll('.animate');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('fade-in'); });
+  }, { threshold: 0.15 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
