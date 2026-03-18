@@ -22,6 +22,7 @@
 html { scroll-behavior: smooth; }
 body { width: 100%; overflow-x: hidden; background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-main); line-height: 1.5; cursor: default; }
 body.is-loading { overflow: hidden; height: 100%; position: fixed; width: 100%; top: 0; left: 0; }
+body.is-loading .modal-overlay { display: none; }
 
 ::-webkit-scrollbar { display: none; }
 html { -ms-overflow-style: none; scrollbar-width: none; }
