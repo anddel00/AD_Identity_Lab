@@ -79,14 +79,18 @@ header.over-blue .lang-switch-btn:hover { background-color: rgba(255, 255, 255, 
 /* MOBILE MENU */
 .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 14px; cursor: pointer; z-index: 2002; }
 .menu-toggle span { display: block; width: 100%; height: 2px; background-color: var(--text-color); transition: all 0.3s ease; }
-.menu-toggle.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); background-color: var(--text-color);}
+/* FIX CROCE: Abbiamo aggiunto !important per assicurarci che diventi sempre scura, battendo l'header bianco */
+.menu-toggle.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); background-color: var(--text-color) !important; }
 .menu-toggle.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
-.menu-toggle.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background-color: var(--text-color);}
+.menu-toggle.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background-color: var(--text-color) !important; }
+/* SETUP BASE RIPPLES (Ritardi per quando si CHIUDE il menu) */
 .menu-ripple { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; clip-path: circle(0% at 100% 0%); pointer-events: none; transition: clip-path 0.7s cubic-bezier(0.8, 0, 0.2, 1); }
 .ripple-black-menu { background-color: var(--text-color); z-index: 1998; transition-delay: 0.2s; }
 .ripple-blue-menu { background-color: var(--accent-color); z-index: 1999; transition-delay: 0.1s; }
-.mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-color); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; clip-path: circle(0% at 100% 0%); transition: clip-path 0.7s cubic-bezier(0.8, 0, 0.2, 1); pointer-events: none; }
-.ripple-black-menu.active, .ripple-blue-menu.active { clip-path: circle(150% at 100% 0%); }
+.mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-color); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; clip-path: circle(0% at 100% 0%); transition: clip-path 0.7s cubic-bezier(0.8, 0, 0.2, 1); transition-delay: 0s; pointer-events: none; }
+/* FIX CERCHI: Ripristinati i ritardi sfalsati per quando si APRE il menu */
+.ripple-black-menu.active { clip-path: circle(150% at 100% 0%); transition-delay: 0s; }
+.ripple-blue-menu.active { clip-path: circle(150% at 100% 0%); transition-delay: 0.1s; }
 .mobile-menu-overlay.active { clip-path: circle(150% at 100% 0%); transition-delay: 0.2s; pointer-events: all; }
 .mobile-nav-list { text-align: center; }
 .mobile-nav-item { margin: 25px 0; overflow: hidden; }
