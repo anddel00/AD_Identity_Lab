@@ -146,13 +146,13 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 
 /* Sezione Testuale in alto */
 .tier-info { width: 100%; max-width: 800px; text-align: center; margin-bottom: 20px; }
-.project-category { font-family: var(--font-tech); font-size: 0.9rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; font-weight: 700; }
+.project-category { font-family: var(--font-tech); font-size: 1.1rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; font-weight: 700; }
 .project-title { font-size: clamp(1.8rem, 2.5vw, 2.5rem); font-weight: 800; color: var(--text-color); line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
 .desc-text { font-size: 1.05rem; color: var(--secondary-text); line-height: 1.6; font-weight: 400;}
 
 /* Galleria Slider orizzontale per i Template (Tutto centrato) */
 .tier-gallery-master { width: 100%; max-width: 1200px; display: flex; flex-direction: column; }
-.tier-gallery-wrapper { position: relative; width: 100%; overflow: hidden; }
+.tier-gallery-wrapper { position: relative; width: 100%; overflow: hidden; border: 1px solid; border-radius: 20px; border-color: var(--accent-color); padding: 20px;}
 
 /* ========================================================== */
 /* --- FIX DEFINITIVO: SCORRIMENTO LINEARE SBLOCCATO --- */
@@ -229,11 +229,44 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
 .slide-actions { display: flex; flex-direction: column; align-items: center; gap: 25px; }
 
 .btn-demo-link {
-  font-family: var(--font-tech); font-size: 0.85rem; font-weight: 700; color: var(--secondary-text);
-  text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border-bottom: 1px solid currentColor;
-  padding-bottom: 4px; transition: color 0.3s ease;
+  font-family: var(--font-tech);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--secondary-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease, text-decoration-color 0.3s ease;
+  /* Trasformiamo il link in un flexbox per allineare testo e freccia */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* Spaziatura tra il testo e l'icona */
 }
-.btn-demo-link:hover { color: var(--accent-color); }
+/* Colore al passaggio del mouse */
+.btn-demo-link:hover {
+  color: var(--accent-color);
+}
+
+/* Animazione fluida della freccia: scatta leggermente in alto a destra */
+.btn-demo-link:hover::after {
+  transform: translate(3px, -3px);
+}
+
+/* Creiamo la freccia diagonale direttamente in CSS */
+.btn-demo-link::after {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+
+  /* Prende in automatico il colore del testo (grigio di base, blu all'hover) */
+  background-color: currentColor;
+
+  /* Disegniamo la freccia usando una maschera SVG */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='7' y1='17' x2='17' y2='7'%3E%3C/line%3E%3Cpolyline points='7 7 17 7 17 17'%3E%3C/polyline%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='7' y1='17' x2='17' y2='7'%3E%3C/line%3E%3Cpolyline points='7 7 17 7 17 17'%3E%3C/polyline%3E%3C/svg%3E") center/contain no-repeat;
+
+  transition: transform 0.3s ease;
+}
 
 .btn-visit {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -251,7 +284,7 @@ body.start-animations p.hero-subtitle { animation: fadeIn 1s ease-out 1.9s forwa
   padding: 0 15px 30px 15px; /* Togliamo padding inutile ai lati */
   position: relative;
   z-index: 30;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 /* 5. Le Frecce sotto allo Slider */
 .gallery-controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px; width: 100%; }
@@ -356,7 +389,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   .footer-grid { grid-template-columns: 1fr; gap: 40px; }
   .blueprint-grid { opacity: 0.5; -webkit-mask-image: none !important; mask-image: none !important;}
 
-  .tier-section { gap: 40px; margin-bottom: 100px; }
+  .tier-section { gap: 20px; margin-bottom: 30px; }
   .plan-features { flex-direction: column; gap: 15px; align-items: flex-start; }
 
   .slider-arrow { display: none !important; }
@@ -364,5 +397,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   .gallery-pagination { gap: 10px; }
 
   .customization-notice { flex-direction: column; align-items: flex-start; padding: 30px; gap: 20px; margin-bottom: 60px; }
-  .btn-demo-link {margin-top: 20px;}
+
+  .btn-demo-link{
+    font-size: 0.85rem;
+  }
 }
