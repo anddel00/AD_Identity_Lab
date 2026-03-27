@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const rejectBtn = document.getElementById("rejectCookies");
 
   // Inserisci qui il tuo ID di Google Analytics (se lo hai)
-  const GA_TRACKING_ID = "G-XXXXXXXXXX";
+  const GA_TRACKING_ID = "G-L8WQCDWVV4";
 
   // Funzione per iniettare Google Analytics SOLO se accettato
   function loadGoogleAnalytics() {
-    if(!GA_TRACKING_ID || GA_TRACKING_ID === "G-XXXXXXXXXX") return;
+    if(!GA_TRACKING_ID || GA_TRACKING_ID === "G-L8WQCDWVV4") return;
 
     const script = document.createElement('script');
     script.async = true;
